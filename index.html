@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1F3864">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Posturas UDI">
+<title>Posturas Uberlândia</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+:root{
+  --azul:#1F3864; --azul2:#2a4a85; --amarelo:#E8A33D;
+  --verde:#2D9D5F; --verde-bg:#E8F5EC;
+  --vermelho:#C0392B; --vm-bg:#FBEAE8;
+  --cinza:#6B7280; --fundo:#F3F4F6; --card:#FFFFFF;
+  --borda:#E5E7EB; --texto:#111827; --radius:16px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;width:100%;overflow:hidden;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--fundo);color:var(--texto);-webkit-font-smoothing:antialiased}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
+
+/* TOPBAR */
+.topbar{background:var(--azul);padding:calc(var(--safe-top) + 14px) 18px 12px;flex-shrink:0;position:relative;z-index:10}
+.topbar-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.app-brand{display:flex;align-items:center;gap:10px}
+.app-icon{width:36px;height:36px;border-radius:10px;background:var(--amarelo);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:var(--azul);letter-spacing:-1px}
+.app-title{color:white;font-weight:700;font-size:16px;line-height:1.1}
+.app-title small{display:block;font-size:10px;font-weight:400;color:rgba(255,255,255,.65)}
+.count-badge{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
+
+/* BUSCA */
+.search-wrap{position:relative}
+.search-input{width:100%;padding:11px 40px 11px 40px;border-radius:12px;border:none;outline:none;font-size:15px;background:rgba(255,255,255,.12);color:white;caret-color:var(--amarelo)}
+.search-input::placeholder{color:rgba(255,255,255,.5)}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.6);pointer-events:none}
+.search-clear{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);border:none;border-radius:50%;width:22px;height:22px;color:white;font-size:13px;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1}
+.search-clear.visible{display:flex}
+
+/* ABAS */
+.tabs{display:flex;background:var(--azul);border-top:1px solid rgba(255,255,255,.1);padding:0 4px 8px}
+.tab-btn{flex:1;padding:7px 4px 5px;border:none;background:transparent;color:rgba(255,255,255,.55);font-size:10.5px;font-weight:600;cursor:pointer;border-radius:10px;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:3px}
+.tab-btn svg{width:19px;height:19px}
+.tab-btn.active{color:var(--amarelo);background:rgba(255,255,255,.08)}
+
+/* CONTEÚDO */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 12px calc(var(--safe-bot) + 12px)}
+.screen{display:none}
+.screen.active{display:block}
+
+/* CHIPS */
+.chips-row{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none}
+.chips-row::-webkit-scrollbar{display:none}
+.chip{padding:5px 13px;border-radius:20px;border:1.5px solid var(--borda);background:var(--card);font-size:11.5px;font-weight:600;white-space:nowrap;cursor:pointer;color:var(--cinza);transition:all .15s;flex-shrink:0}
+.chip.active{background:var(--azul);color:white;border-color:var(--azul)}
+
+/* CARDS */
+.infraction-list{display:flex;flex-direction:column;gap:9px}
+.infraction-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--borda);padding:13px 13px 11px;cursor:pointer;transition:all .15s;position:relative}
+.infraction-card:active{transform:scale(.98);background:#f9fafb}
+.card-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px}
+.card-badge{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.card-badge svg{width:19px;height:19px}
+.badge-verde{background:var(--verde-bg);color:var(--verde)}
+.badge-amarelo{background:#FEF3C7;color:#92400E}
+.badge-vermelho{background:var(--vm-bg);color:var(--vermelho)}
+.card-info{flex:1;min-width:0}
+.card-title{font-weight:700;font-size:13.5px;line-height:1.25;margin-bottom:2px}
+.card-desc{font-size:11.5px;color:var(--cinza);line-height:1.35}
+.card-chave{font-size:10px;color:var(--azul);font-weight:700;margin-top:2px;opacity:.7}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;padding-top:7px;border-top:1px solid var(--borda)}
+.card-art{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px}
+.art-verde{background:var(--verde-bg);color:var(--verde)}
+.art-amarelo{background:#FEF3C7;color:#92400E}
+.art-vermelho{background:var(--vm-bg);color:var(--vermelho)}
+.card-multa{font-size:10.5px;font-weight:700;color:var(--azul)}
+.sev-bar{height:3px;border-radius:2px;margin-top:5px}
+.sev-leve{background:linear-gradient(90deg,var(--verde) 33%,var(--borda) 33%)}
+.sev-media{background:linear-gradient(90deg,var(--amarelo) 66%,var(--borda) 66%)}
+.sev-grave{background:var(--vermelho)}
+
+/* DETALHE */
+.detail-header{background:var(--azul);border-radius:var(--radius);padding:15px;margin-bottom:13px;color:white;display:flex;align-items:center;gap:12px}
+.detail-badge{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.detail-badge svg{width:24px;height:24px;color:white}
+.detail-title{font-size:15px;font-weight:700;line-height:1.25;margin-bottom:3px}
+.detail-chave{font-size:11px;color:rgba(255,255,255,.6);font-family:monospace}
+.section-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--cinza);margin-bottom:7px;margin-top:14px}
+.section-label:first-of-type{margin-top:0}
+.info-box{background:var(--card);border-radius:12px;border:1px solid var(--borda);padding:13px;font-size:13.5px;line-height:1.55;color:var(--texto);margin-bottom:9px}
+.info-box.auto-text{background:#EFF6FF;border-color:#BFDBFE;color:#1E3A5F;font-size:13px}
+.multa-box{background:var(--vm-bg);border:1px solid #FECACA;border-radius:12px;padding:13px;margin-bottom:9px}
+.multa-box .multa-title{font-size:10.5px;font-weight:700;color:var(--vermelho);text-transform:uppercase;margin-bottom:3px}
+.multa-box .multa-val{font-size:16px;font-weight:800;color:var(--vermelho)}
+.multa-box .multa-sub{font-size:10.5px;color:var(--vermelho);opacity:.8;margin-top:2px}
+.prazo-box{background:var(--verde-bg);border:1px solid #A7F3D0;border-radius:12px;padding:13px;margin-bottom:9px}
+.prazo-box .prazo-title{font-size:10.5px;font-weight:700;color:var(--verde);text-transform:uppercase;margin-bottom:3px}
+.prazo-box .prazo-val{font-size:14px;font-weight:700;color:var(--verde)}
+.art-box{background:#F5F3FF;border:1px solid #DDD6FE;border-radius:12px;padding:13px;margin-bottom:9px}
+.art-box .art-title{font-size:10.5px;font-weight:700;color:#6D28D9;text-transform:uppercase;margin-bottom:3px}
+.art-box .art-val{font-size:13px;font-weight:700;color:#4C1D95}
+.copy-btn{width:100%;padding:13px;border-radius:12px;border:none;background:var(--azul);color:white;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:9px;transition:all .15s}
+.copy-btn:active{background:var(--azul2);transform:scale(.98)}
+.copy-btn.secondary{background:white;color:var(--azul);border:2px solid var(--azul)}
+.copy-btn.copied{background:var(--verde)}
+.copy-btn svg{width:17px;height:17px}
+.back-btn{display:flex;align-items:center;gap:6px;padding:8px 0;color:var(--azul);font-weight:600;font-size:14px;cursor:pointer;margin-bottom:13px;background:none;border:none}
+.back-btn svg{width:18px;height:18px}
+
+/* CARTILHA */
+.cartilha-section{background:var(--card);border-radius:var(--radius);border:1px solid var(--borda);margin-bottom:11px;overflow:hidden}
+.cartilha-section-header{background:var(--azul);color:white;padding:11px 15px;display:flex;align-items:center;gap:9px;cursor:pointer;user-select:none}
+.cartilha-section-header svg{width:17px;height:17px;flex-shrink:0}
+.cartilha-section-title{font-weight:700;font-size:13.5px;flex:1}
+.cartilha-chevron{width:17px;height:17px;transition:transform .25s}
+.cartilha-section.open .cartilha-chevron{transform:rotate(180deg)}
+.cartilha-section-body{padding:0;max-height:0;overflow:hidden;transition:max-height .35s ease}
+.cartilha-section.open .cartilha-section-body{max-height:3000px}
+.cartilha-item{padding:11px 14px;border-bottom:1px solid var(--borda);display:flex;gap:11px;align-items:flex-start}
+.cartilha-item:last-child{border-bottom:none}
+.cartilha-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.dot-verde{background:var(--verde)}
+.dot-amarelo{background:var(--amarelo)}
+.dot-vermelho{background:var(--vermelho)}
+.dot-azul{background:var(--azul)}
+.cartilha-item-text{font-size:12.5px;line-height:1.5}
+.cartilha-item-text strong{color:var(--azul);display:block;font-size:13px;margin-bottom:2px}
+.art-tag{font-size:9.5px;font-weight:700;color:var(--verde);background:var(--verde-bg);padding:2px 7px;border-radius:5px;display:inline-block;margin-top:4px}
+
+/* ECOPONTOS */
+.ecoponto-card{background:var(--card);border-radius:14px;border:1px solid var(--borda);padding:13px 14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
+.ecoponto-num{width:34px;height:34px;border-radius:10px;background:var(--verde-bg);color:var(--verde);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ecoponto-info{}
+.ecoponto-bairro{font-weight:700;font-size:14px;color:var(--azul);margin-bottom:3px}
+.ecoponto-end{font-size:12.5px;color:var(--cinza);line-height:1.4;margin-bottom:4px}
+.ecoponto-horario{font-size:11px;font-weight:600;color:var(--verde);background:var(--verde-bg);padding:2px 9px;border-radius:20px;display:inline-block}
+.ecoponto-maps-btn{margin-top:7px;display:flex;align-items:center;gap:5px;background:none;border:1.5px solid var(--azul);color:var(--azul);border-radius:8px;padding:5px 11px;font-size:11.5px;font-weight:700;cursor:pointer}
+.ecoponto-maps-btn svg{width:13px;height:13px}
+.eco-header{background:var(--verde);border-radius:var(--radius);padding:14px;margin-bottom:13px;color:white}
+.eco-header-title{font-weight:800;font-size:16px;margin-bottom:4px}
+.eco-header-sub{font-size:12px;opacity:.88;line-height:1.4}
+.eco-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:5px;margin-bottom:12px;scrollbar-width:none}
+.eco-chips::-webkit-scrollbar{display:none}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:40px 20px}
+.empty-icon{font-size:44px;margin-bottom:10px;opacity:.4}
+.empty-title{font-size:15px;font-weight:700;color:var(--cinza);margin-bottom:5px}
+.empty-sub{font-size:12.5px;color:var(--cinza);line-height:1.5}
+
+/* SNACKBAR */
+.snackbar{position:fixed;bottom:calc(var(--safe-bot) + 18px);left:50%;transform:translateX(-50%) translateY(20px);background:#1F2937;color:white;padding:9px 18px;border-radius:24px;font-size:12.5px;font-weight:600;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:999}
+.snackbar.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* INSTALL BANNER */
+.install-banner{background:var(--amarelo);color:var(--azul);padding:9px 13px;display:flex;align-items:center;gap:9px;font-size:11.5px;font-weight:600}
+.install-banner button{border:2px solid var(--azul);background:transparent;color:var(--azul);padding:4px 12px;border-radius:20px;font-weight:700;font-size:11px;cursor:pointer}
+.install-banner .close-install{background:none;border:none;cursor:pointer;margin-left:auto;color:var(--azul);font-size:18px}
+.content::-webkit-scrollbar{width:0}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- INSTALL BANNER -->
+  <div class="install-banner" id="installBanner" style="display:none">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v12M8 10l4 4 4-4"/><path d="M3 18h18v2a1 1 0 01-1 1H4a1 1 0 01-1-1v-2z"/></svg>
+    <span>Instalar como app no celular</span>
+    <button id="installBtn">Instalar</button>
+    <button class="close-install" id="closeInstall">×</button>
+  </div>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-row">
+      <div class="app-brand">
+        <div class="app-icon">P</div>
+        <div class="app-title">Posturas UDI <small>Fiscalização · Lei nº 10.741/2011</small></div>
+      </div>
+      <span class="count-badge" id="countBadge">0</span>
+    </div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="searchInput" type="search" placeholder="Palavra-chave, artigo, descrição..." autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="search-clear" id="searchClear">×</button>
+    </div>
+  </div>
+
+  <!-- ABAS -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="busca">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Infrações
+    </button>
+    <button class="tab-btn" data-tab="auto">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>Auto
+    </button>
+    <button class="tab-btn" data-tab="cartilha">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 012-2h12a2 2 0 012 2v14"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>Cartilha
+    </button>
+    <button class="tab-btn" data-tab="ecopontos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.33-8.91C1.2 8.4 2.9 5 6.2 5c2 0 3.3 1.1 3.8 2C10.5 6.1 11.8 5 13.8 5c3.3 0 5 3.4 3.53 7.09C19 16.65 12 21 12 21z"/></svg>Ecopontos
+    </button>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="content">
+
+    <!-- TELA BUSCA -->
+    <div class="screen active" id="screen-busca">
+      <div class="chips-row" id="categoryChips">
+        <div class="chip active" data-cat="todos">⊞ Todos</div>
+        <div class="chip" data-cat="limpeza">🧹 Limpeza</div>
+        <div class="chip" data-cat="calcada">🏠 Calçadas</div>
+        <div class="chip" data-cat="som">🔊 Som</div>
+        <div class="chip" data-cat="comercio">🪪 Comércio</div>
+        <div class="chip" data-cat="publicidade">🪧 Publicidade</div>
+        <div class="chip" data-cat="transito">🚗 Trânsito</div>
+        <div class="chip" data-cat="animais">🐾 Animais</div>
+        <div class="chip" data-cat="obras">🚧 Obras</div>
+        <div class="chip" data-cat="eventos">🎪 Eventos</div>
+      </div>
+      <div class="infraction-list" id="infractionList"></div>
+      <div class="empty-state" id="emptyState" style="display:none">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">Nenhum resultado</div>
+        <div class="empty-sub">Tente outro termo ou remova os filtros</div>
+      </div>
+    </div>
+
+    <!-- TELA AUTO -->
+    <div class="screen" id="screen-auto">
+      <button class="back-btn" id="backBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        Voltar para lista
+      </button>
+      <div id="detailContent"></div>
+    </div>
+
+    <!-- TELA CARTILHA -->
+    <div class="screen" id="screen-cartilha">
+      <div style="display:flex;justify-content:center;margin-bottom:14px">
+        <img src="images/mascote-posturinha.png" alt="Posturinha, mascote da Fiscalização de Posturas" style="width:132px;height:132px;object-fit:contain;border-radius:50%;background:var(--card);border:3px solid var(--azul);box-shadow:0 4px 14px rgba(0,0,0,.15)">
+      </div>
+      <p style="font-size:12.5px;color:var(--cinza);margin-bottom:13px;line-height:1.5">
+        Guia resumido do <strong>Código Municipal de Posturas</strong> de Uberlândia (Lei nº 10.741/2011). Valores atualizados pela Resolução SESURB nº 01/2025.
+      </p>
+
+      <div class="cartilha-section open">
+        <div class="cartilha-section-header" onclick="toggleSection(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          <span class="cartilha-section-title">Boas práticas obrigatórias</span>
+          <svg class="cartilha-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="cartilha-section-body">
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Limpar calçada e sarjeta em frente ao imóvel</strong>Moradores e comerciantes são responsáveis pela limpeza dos passeios e sarjetas fronteiriços.<span class="art-tag">Art. 3º e 5º</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Construir e manter calçada pavimentada na testada</strong>Imóveis com frente para via pública com meio-fio devem ter calçada em toda a testada.<span class="art-tag">Art. 15</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Manter terrenos limpos, capinados e drenados</strong>Proprietários de terrenos edificados ou não devem mantê-los em perfeito estado de limpeza.<span class="art-tag">Art. 14</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Cercar o terreno em todas as divisas</strong>Proibido usar arame farpado. Obrigatório impedir carreamento de solo para a rua.<span class="art-tag">Art. 136</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Separar lixo compostável e não compostável</strong>Edifícios devem ter coleta seletiva separando orgânicos de recicláveis.<span class="art-tag">Art. 7º e 8º</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Recolher fezes do animal durante o passeio</strong>Tutores devem sempre recolher dejetos dos pets nas vias públicas.<span class="art-tag">Art. 4º, XXV</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Obter alvará antes de abrir o estabelecimento</strong>Nenhum comércio, indústria ou prestador pode funcionar sem licença de localização.<span class="art-tag">Art. 187</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Sinalizar obras e remover entulhos em até 6 horas</strong>Materiais e resíduos de obras devem ser contidos com tapumes e removidos rapidamente.<span class="art-tag">Art. 20 e 24</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Obter licença para ocupar calçada com mesas e cadeiras</strong>A faixa livre de pedestres mínima é 1,20 m. Taxa de uso e ocupação do solo deve ser paga.<span class="art-tag">Art. 55</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>Manter alvará visível e atualizado no estabelecimento</strong>O alvará tem validade de 5 anos e deve ser renovado 30 dias úteis antes do vencimento.<span class="art-tag">Art. 194 e 197</span></div></div>
+        </div>
+      </div>
+
+      <div class="cartilha-section">
+        <div class="cartilha-section-header" onclick="toggleSection(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l9 16H3z"/><line x1="12" y1="9" x2="12" y2="14"/><circle cx="12" cy="17.5" r=".5" fill="white"/></svg>
+          <span class="cartilha-section-title">Proibições — Art. 4º</span>
+          <svg class="cartilha-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="cartilha-section-body">
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Lavar roupa ou animal em logradouro público</strong>Inciso I</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Aterrar vias públicas com lixo ou detritos</strong>Inciso III</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Varrer lixo para a rua ou bocas de lobo</strong>Incisos IV e XIV</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Depositar entulho em praças, canteiros e logradouros</strong>Inciso XIII</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Lançar panfletos, confetes e similares em vias públicas</strong>Inciso XVI</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Escoar águas servidas para a rua</strong>Inciso XXVI</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Deixar fios e cabos desalinhados em postes</strong>Inciso XXIV</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Não recolher fezes do animal em local público</strong>Inciso XXV</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Transportar carga sem cobertura (areia, terra, pedra...)</strong>Inciso XXVII</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>Derramar óleo, graxa ou cal em vias públicas</strong>Inciso X</div></div>
+        </div>
+      </div>
+
+      <div class="cartilha-section">
+        <div class="cartilha-section-header" onclick="toggleSection(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 9l3 3 5-5"/></svg>
+          <span class="cartilha-section-title">Funcionamento de estabelecimentos</span>
+          <svg class="cartilha-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="cartilha-section-body">
+          <div class="cartilha-item"><div class="cartilha-dot dot-amarelo"></div><div class="cartilha-item-text"><strong>Alvará com validade de 5 anos</strong>Renovar até 30 dias úteis antes do vencimento, sob pena de interdição.<span class="art-tag">Art. 197</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-amarelo"></div><div class="cartilha-item-text"><strong>Horário comércio: 8h–18h (dias úteis) / até 13h (sábado)</strong>Shoppings: seg–sáb até 22h | dom/feriado 10h–21h.<span class="art-tag">Art. 206</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-amarelo"></div><div class="cartilha-item-text"><strong>Atividades de alto risco exigem AVCB</strong>Hospitais, shoppings, danceterias, postos e similares obrigam Auto de Vistoria do Corpo de Bombeiros.<span class="art-tag">Art. 191</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-amarelo"></div><div class="cartilha-item-text"><strong>Proibida a venda de álcool a menores de 18 anos</strong>O estabelecimento responde solidariamente pela infração.<span class="art-tag">Art. 32</span></div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-amarelo"></div><div class="cartilha-item-text"><strong>Depósitos de ferro-velho: muro de alvenaria ≥ 2,50 m</strong>Proibido expor material nos passeios ou fixar nos muros.<span class="art-tag">Art. 200 e 201</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TELA ECOPONTOS -->
+    <div class="screen" id="screen-ecopontos">
+      <div class="eco-header">
+        <div class="eco-header-title">♻ Ecopontos de Uberlândia</div>
+        <div class="eco-header-sub">16 unidades • Funcionamento: todos os dias, das 7h às 19h • Gratuito para pequenos geradores<br>Dúvidas: fernandasousa@uberlandia.mg.gov.br</div>
+      </div>
+      <div id="ecopontosList"></div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<div class="snackbar" id="snackbar">✓ Copiado!</div>
+
+<script>
+// ════════════════════════════════════════════════
+// ÍCONES POR CATEGORIA
+// ════════════════════════════════════════════════
+const ICONS = {
+  limpeza:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l5-12 4 9 3-6 6 9"/><circle cx="18" cy="6" r="2"/></svg>`,
+  calcada:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>`,
+  som:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M16 8a5 5 0 010 8"/></svg>`,
+  comercio:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><line x1="13" y1="10" x2="17" y2="10"/><line x1="13" y1="13" x2="17" y2="13"/></svg>`,
+  publicidade:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="14" height="10" rx="1"/><path d="M17 8l4-2v8l-4-2"/></svg>`,
+  transito:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="20" height="8" rx="2"/><path d="M5 10V7a7 7 0 0114 0v3"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/></svg>`,
+  animais:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="2"/><circle cx="16" cy="8" r="2"/><circle cx="5" cy="14" r="1.5"/><circle cx="19" cy="14" r="1.5"/><path d="M12 13c-3 0-5 2-5 4.5 0 1 .8 1.5 2 1.5h6c1.2 0 2-.5 2-1.5 0-2.5-2-4.5-5-4.5z"/></svg>`,
+  obras:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l3-9h12l3 9"/><path d="M3 17h18v3H3z"/><line x1="9" y1="8" x2="7.5" y2="3"/><line x1="15" y1="8" x2="16.5" y2="3"/></svg>`,
+  eventos:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+};
+const badgeClass=g=>g==='grave'?'badge-vermelho':g==='media'?'badge-amarelo':'badge-verde';
+const artClass=g=>g==='grave'?'art-vermelho':g==='media'?'art-amarelo':'art-verde';
+
+// ════════════════════════════════════════════════
+// BASE DE DADOS — 65 INFRAÇÕES
+// ════════════════════════════════════════════════
+const DB = [
+  // ── LIMPEZA (1-12) ──
+  {chave:"terreno-sujo",cat:"limpeza",titulo:"Terreno sujo / com mato alto",descricao:"Terreno baldio ou lote não edificado coberto de mato, com acúmulo de lixo ou entulho",artigo:"Art. 14, §2º c/c Art. 19",texto:"Promover a limpeza, capina e drenagem do terreno, retirando todo lixo, entulho e resíduo de qualquer natureza",prazo:"15 dias úteis",multa:"R$ 194,68 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"descarte-lixo",cat:"limpeza",titulo:"Descarte irregular de lixo/entulho",descricao:"Depósito de entulho, lixo ou resíduos em logradouro público, terreno de terceiros ou área inadequada",artigo:"Art. 4º, incisos III, XIII e XIX c/c Art. 5º",texto:"Cessar imediatamente o descarte irregular e remover o material depositado na via pública/terreno, destinando-o corretamente",prazo:"Imediato ou 15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"queimada",cat:"limpeza",titulo:"Queimada / queima de lixo",descricao:"Queima de lixo, mato ou resíduos a céu aberto em terreno urbano ou via pública",artigo:"Art. 10 c/c Art. 4º, parágrafo único e Art. 13",texto:"Cessar imediatamente a queimada e adotar meios adequados de limpeza e destinação do material",prazo:"Imediato",multa:"R$ 360,25 a R$ 2.882,04 (dobro se decorrente de queimada)",gravidade:"grave"},
+  {chave:"panfleto-papel-picado",cat:"limpeza",titulo:"Panfletos / papel picado em via pública",descricao:"Lançamento de papéis picados, confetes, serpentinas, volantes ou panfletos nas vias e logradouros públicos",artigo:"Art. 4º, inciso XVI c/c Art. 5º",texto:"Cessar a distribuição/lançamento de panfletos e materiais similares nas vias públicas e providenciar a limpeza imediata do local",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"lavagem-via-publica",cat:"limpeza",titulo:"Lavagem de roupa/animal em logradouro",descricao:"Lavagem de roupas ou animais em logradouros públicos ou banho em chafarizes sem autorização",artigo:"Art. 4º, inciso I c/c Art. 5º",texto:"Cessar imediatamente a lavagem de roupas/animais ou banho em local público não autorizado",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"agua-servida",cat:"limpeza",titulo:"Escoamento de água servida para a rua",descricao:"Permitir o escoamento de águas servidas de residências ou estabelecimentos para as vias públicas",artigo:"Art. 4º, inciso XXVI c/c Art. 5º",texto:"Cessar o escoamento de águas servidas para a via pública e providenciar destinação adequada (rede de esgoto)",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"fios-postes",cat:"limpeza",titulo:"Fios/cabos desalinhados em postes",descricao:"Fios, cabos ou equipamentos excedentes fixados em postes desalinhados da fiação principal",artigo:"Art. 4º, inciso XXIV c/c Art. 5º",texto:"Realinhar ou remover os fios/cabos excedentes fixados de forma irregular no poste, adequando-os ao conjunto da fiação",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"oleo-graca-via",cat:"limpeza",titulo:"Derramamento de óleo/graxa em via pública",descricao:"Derramar óleo, graxa, cal ou outros produtos capazes de afetar a higiene das vias públicas",artigo:"Art. 4º, inciso X c/c Art. 5º",texto:"Cessar o derramamento e providenciar a limpeza completa do trecho da via pública afetado pelo óleo/graxa/cal",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"animal-morto-via",cat:"limpeza",titulo:"Animal morto em logradouro público",descricao:"Colocar ou deixar animal morto em vias e logradouros públicos, obrigação de conduzir ao aterro",artigo:"Art. 127, inciso III c/c Art. 128",texto:"Remover imediatamente o animal morto do logradouro público, destinando-o ao aterro sanitário conforme normas sanitárias vigentes",prazo:"Imediato",multa:"R$ 183,10 a R$ 1.866,12",gravidade:"media"},
+  {chave:"varricao-sarjeta",cat:"limpeza",titulo:"Varrição de lixo para sarjeta/boca de lobo",descricao:"Varrer lixo ou detritos sólidos para sarjetas, valas ou equipamentos de captação de água pluvial dos logradouros",artigo:"Art. 4º, inciso XIV c/c Art. 5º",texto:"Cessar imediatamente a varrição de lixo para sarjetas ou bocas de lobo e recolher o material adequadamente",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"carga-sem-cobertura",cat:"limpeza",titulo:"Transporte de carga sem cobertura adequada",descricao:"Transportar materiais a granel (areia, terra, pedra, argila) sem manejo, cobertura ou proteção adequada",artigo:"Art. 4º, inciso XXVII c/c Art. 5º",texto:"Providenciar cobertura ou proteção adequada para o transporte do material, evitando espalhamento nas vias públicas",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"imovel-ruina",cat:"limpeza",titulo:"Imóvel abandonado em ruína",descricao:"Edificação abandonada em estado de ruína com risco à segurança da vizinhança, depósito de lixo ou água insalubre",artigo:"Art. 16 c/c Art. 17 e Art. 19",texto:"Promover a demolição do imóvel e a destinação ambientalmente correta do entulho gerado",prazo:"Conforme notificação prévia específica",multa:"R$ 194,68 a R$ 1.866,12 + ação judicial para demolição",gravidade:"grave"},
+
+  // ── CALÇADAS / IMÓVEIS (13-24) ──
+  {chave:"falta-calcada",cat:"calcada",titulo:"Falta de calçada/passeio",descricao:"Imóvel com frente para via pública dotada de meio-fio sem calçada pavimentada na testada",artigo:"Art. 15, §1º c/c Art. 19",texto:"Construir/reformar a calçada em toda a extensão da testada do imóvel, em conformidade com o Código de Obras e legislação de acessibilidade",prazo:"180 dias (ou 60 dias por interesse público)",multa:"R$ 194,68 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"terreno-sem-muro",cat:"calcada",titulo:"Terreno sem fechamento/muro",descricao:"Lote ou terreno vago sem cercamento das divisas, permitindo carreamento de material para a via pública",artigo:"Art. 136 c/c Art. 141",texto:"Fechar o terreno em todas as suas divisas, sendo vedado o uso de arame farpado",prazo:"30 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"calcada-mesas",cat:"calcada",titulo:"Mesas/cadeiras irregulares na calçada (Art. 55)",descricao:"Mesas, cadeiras ou objetos ocupando passeio público sem licença da Secretaria ou sem respeitar faixa livre de 1,20 m",artigo:"Art. 55, inciso III c/c Art. 58",texto:"Retirar o mobiliário da calçada ou regularizar a licença de uso e ocupação do solo, respeitando a faixa de circulação de pedestres de no mínimo 1,20 m livre",prazo:"10 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"calcada-inadimplente",cat:"calcada",titulo:"Taxa de ocupação de calçada não paga",descricao:"Estabelecimento com mesas e cadeiras em calçada com 3 ou mais parcelas da taxa de uso e ocupação do solo em atraso",artigo:"Art. 55, §5º c/c Art. 58",texto:"Regularizar o pagamento da taxa de uso e ocupação da calçada e retirar o mobiliário até a quitação dos débitos em aberto",prazo:"10 dias",multa:"R$ 194,69 a R$ 1.866,12 + cassação da licença",gravidade:"media"},
+  {chave:"calcada-obstrucao",cat:"calcada",titulo:"Calçada obstruída por objetos/material",descricao:"Objetos, materiais ou equipamentos depositados na calçada impedindo o trânsito livre de pedestres",artigo:"Art. 55, inciso I c/c Art. 58",texto:"Retirar imediatamente os objetos/materiais que obstruem a faixa de circulação de pedestres na calçada, garantindo passagem livre mínima de 1,20 m",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"mobiliario-obstrucao",cat:"calcada",titulo:"Mobiliário urbano obstruindo pedestres",descricao:"Elemento de mobiliário urbano (banca, totem, quiosque etc.) obstruindo a faixa de circulação de pedestres ou acesso de PCD",artigo:"Art. 62, inciso II c/c Art. 67",texto:"Reposicionar ou remover o mobiliário urbano que obstrui a faixa de circulação de pedestres e o acesso de pessoas com deficiência",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"toldo-irregular",cat:"calcada",titulo:"Toldo fora das dimensões permitidas",descricao:"Instalação de toldo que excede 80% da largura do passeio, com balanço acima de 2 m ou abaixo da altura mínima de 2,20 m",artigo:"Art. 183 c/c Art. 186",texto:"Adequar as dimensões do toldo aos limites de largura e altura previstos em lei, retirando o excesso de balanço e respeitando a altura mínima de 2,20 m",prazo:"30 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"media"},
+  {chave:"arame-farpado-cerca",cat:"calcada",titulo:"Cerca com arame farpado em área urbana",descricao:"Fechamento de terreno urbano usando arame farpado, proibido no perímetro urbano por risco a pedestres",artigo:"Art. 135 c/c Art. 141",texto:"Substituir o arame farpado por outro tipo de fechamento adequado, como tela, gradil ou muro, dentro do prazo estabelecido",prazo:"30 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"media"},
+  {chave:"calçada-danificada",cat:"calcada",titulo:"Calçada danificada / em mau estado",descricao:"Passeio público danificado, com buracos, desnível ou revestimento quebrado que oferece risco a pedestres",artigo:"Art. 137 c/c Art. 141",texto:"Reparar e restaurar a calçada em toda a extensão da testada do imóvel, garantindo pavimentação regular, nivelada e segura para os pedestres",prazo:"30 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"calçada-sem-acessibilidade",cat:"calcada",titulo:"Calçada sem acessibilidade / rampa",descricao:"Ausência de rebaixamento de calçada (rampa) ou guia rebaixada para pessoas com deficiência na testada do imóvel",artigo:"Art. 15, §1º e legislação de acessibilidade c/c Art. 19",texto:"Construir rebaixamento de calçada (rampa de acessibilidade) na testada do imóvel, conforme normas técnicas da ABNT NBR 9050",prazo:"180 dias",multa:"R$ 194,68 a R$ 1.866,12",gravidade:"media"},
+  {chave:"instalacao-mobiliario-sem-licenca",cat:"calcada",titulo:"Instalação de mobiliário urbano sem licença",descricao:"Instalação de equipamento em logradouro público (quiosque, banca, totem etc.) sem licenciamento prévio da Secretaria",artigo:"Art. 59 c/c Art. 67",texto:"Retirar o mobiliário instalado irregularmente no logradouro público ou requerer imediatamente o licenciamento junto à Secretaria Municipal de Serviços Urbanos",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"quintal-mato",cat:"calcada",titulo:"Quintal/pátio com mato e entulho",descricao:"Manutenção de lotes, quintais ou pátios na zona urbana com matagal, entulho, poça d'água parada ou materiais nocivos à saúde",artigo:"Art. 4º, inciso XXIII c/c Art. 5º",texto:"Limpar e manter o quintal/pátio isento de matagal, entulho, lixo e água parada, conforme o prazo estabelecido nesta notificação",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+
+  // ── SOM / PERTURBAÇÃO (25-30) ──
+  {chave:"poluicao-sonora",cat:"som",titulo:"Poluição sonora / perturbação do sossego",descricao:"Ruídos excessivos provenientes de som, instrumentos ou viva voz em estabelecimento, perturbando a vizinhança",artigo:"Art. 35, inciso II c/c Art. 36",texto:"Adequar o nível de som do estabelecimento, evitando perturbação ao sossego da vizinhança",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"carro-de-som",cat:"som",titulo:"Carro de som sem licença",descricao:"Veículo com alto-falante fazendo propaganda em local público sem licença ou fora do horário permitido",artigo:"Art. 167 c/c Art. 36",texto:"Cessar a propaganda sonora ou apresentar a licença da Coordenadoria de Trânsito e Transportes para a atividade",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"escapamento-moto",cat:"som",titulo:"Escapamento de moto irregular",descricao:"Uso/venda de escapamento para motocicleta que emita ruído em desconformidade com as normas do CONAMA",artigo:"Art. 35-A c/c Art. 36",texto:"Substituir o escapamento por outro que atenda às normas técnicas e limites de ruído estabelecidos pelos órgãos competentes",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"culto-ruido",cat:"som",titulo:"Igreja/templo com ruído excessivo",descricao:"Local de culto com cerimônias, cânticos ou palmas causando perturbação à vizinhança",artigo:"Art. 133 c/c Art. 134",texto:"Adequar o nível sonoro das cerimônias e atividades do templo/igreja para não perturbar os vizinhos nem no período noturno",prazo:"Imediato",multa:"R$ 333,28 a R$ 1.866,12",gravidade:"media"},
+  {chave:"pregao-viva-voz",cat:"som",titulo:"Pregão/propaganda a viva voz em via pública",descricao:"Ruídos produzidos por pregões, anúncios ou propaganda a viva voz em via pública causando perturbação",artigo:"Art. 35, inciso I c/c Art. 36",texto:"Cessar imediatamente a prática de pregão ou propaganda a viva voz que cause perturbação ou incômodo à população",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"caixa-som-exterior",cat:"som",titulo:"Caixa de som voltada para área externa",descricao:"Colocação de caixas de som ou equipamentos de emissão de som nas áreas internas voltadas para as áreas externas",artigo:"Art. 35, parágrafo único c/c Art. 36",texto:"Retirar ou reposicionar as caixas de som de forma que não emitam som diretamente para a área externa do estabelecimento",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+
+  // ── COMÉRCIO / ESTABELECIMENTOS (31-43) ──
+  {chave:"sem-alvara",cat:"comercio",titulo:"Funcionamento sem alvará",descricao:"Estabelecimento comercial, industrial ou prestador de serviço em atividade sem licença de localização e funcionamento",artigo:"Art. 187 c/c Art. 193 e Art. 205",texto:"Apresentar o Alvará de Funcionamento ou comprovante de protocolo do pedido de licenciamento junto à Secretaria de Finanças",prazo:"30 dias",multa:"R$ 267,83 a R$ 2.563,37 + interdição",gravidade:"media"},
+  {chave:"fora-horario",cat:"comercio",titulo:"Funcionamento fora do horário permitido",descricao:"Estabelecimento comercial realizando atos de compra e venda fora do horário de funcionamento autorizado",artigo:"Art. 206 c/c Art. 212 e Art. 214",texto:"Adequar o funcionamento do estabelecimento ao horário previsto em lei ou em acordo coletivo devidamente registrado",prazo:"Imediato",multa:"R$ 399,82 a R$ 1.866,12",gravidade:"media"},
+  {chave:"alvara-vencido",cat:"comercio",titulo:"Alvará de funcionamento vencido",descricao:"Estabelecimento em funcionamento com alvará expirado, sem solicitar renovação no prazo legal",artigo:"Art. 197, parágrafo único c/c Art. 205",texto:"Requerer imediatamente a renovação do Alvará de Funcionamento junto à Secretaria Municipal de Finanças, apresentando toda a documentação exigida",prazo:"30 dias",multa:"R$ 267,83 a R$ 2.563,37",gravidade:"media"},
+  {chave:"venda-alcool-menor",cat:"comercio",titulo:"Venda de álcool a menor de 18 anos",descricao:"Estabelecimento que comercializa bebida alcoólica para pessoa menor de 18 anos de idade",artigo:"Art. 32, parágrafo único c/c Art. 36",texto:"Cessar imediatamente a venda de bebidas alcoólicas a menores de 18 anos, sob pena de interdição do estabelecimento",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"toldo-sem-licenca",cat:"comercio",titulo:"Toldo instalado sem licença",descricao:"Toldo instalado em fachada de estabelecimento sem autorização da Secretaria e/ou fora dos padrões exigidos",artigo:"Art. 183 c/c Art. 186",texto:"Regularizar a instalação do toldo junto à Secretaria ou retirá-lo, obedecendo as dimensões e altura mínima de 2,20 m previstas em lei",prazo:"30 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"ambulante-irregular",cat:"comercio",titulo:"Comércio ambulante sem autorização",descricao:"Comércio exercido em área pública sem autorização expressa do órgão competente",artigo:"Art. 28 c/c Art. 29",texto:"Cessar imediatamente o comércio no local ou apresentar a autorização para exercício da atividade em área pública",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"banca-irregular",cat:"comercio",titulo:"Banca/estrutura de comércio irregular",descricao:"Trailer, banca ou quiosque montado fora do local autorizado ou com fixação irregular em poste/árvore/calçada",artigo:"Art. 60 e Art. 62 c/c Art. 67",texto:"Remover ou reposicionar a estrutura de comércio para o local autorizado, retirando qualquer fixação irregular em poste, árvore ou calçada",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"feira-livre-limpeza",cat:"comercio",titulo:"Feirante — falta de limpeza na área",descricao:"Feirante que não mantém varridas e limpas as áreas de sua barraca e de circulação adjacentes",artigo:"Art. 26 c/c Art. 29",texto:"Varrer e limpar a área de localização da barraca e as áreas de circulação adjacentes, recolhendo e acondicionando os resíduos adequadamente",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"inflamaveis-irregular",cat:"comercio",titulo:"Depósito de inflamáveis fora das normas",descricao:"Manutenção de depósito de substâncias inflamáveis ou explosivos sem atender às exigências de segurança",artigo:"Art. 115, inciso II c/c Art. 123",texto:"Regularizar o depósito de inflamáveis/explosivos conforme as exigências de segurança do Corpo de Bombeiros ou cessar a guarda do material",prazo:"Imediato a 15 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"grave"},
+  {chave:"fogos-artificio",cat:"comercio",titulo:"Fogos de artifício com estouro",descricao:"Comercialização ou queima de fogos de artifício ou artefatos pirotécnicos com estouro em via pública",artigo:"Art. 115, inciso IV c/c Art. 116",texto:"Cessar imediatamente a comercialização e/ou queima de fogos de artifício com estouro no território do Município",prazo:"Imediato",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"grave"},
+  {chave:"deposito-ferro-velho",cat:"comercio",titulo:"Depósito de ferro-velho irregular",descricao:"Ferro-velho sem muro de alvenaria com altura mínima de 2,50 m ou expondo material nos passeios",artigo:"Art. 200 e 201 c/c Art. 205",texto:"Adequar o depósito construindo muro de alvenaria ou concreto com altura mínima de 2,50 m e retirando qualquer material exposto nos passeios",prazo:"30 dias",multa:"R$ 267,83 a R$ 2.563,37",gravidade:"media"},
+  {chave:"aferição-aparelhos",cat:"comercio",titulo:"Aparelhos de medição sem aferição",descricao:"Estabelecimento que não submeteu aparelhos ou instrumentos de medida à aferição pelo INMETRO antes do início das atividades",artigo:"Art. 204 c/c Art. 205",texto:"Submeter à aferição todos os aparelhos e instrumentos de medida utilizados nas transações comerciais, conforme normas do INMETRO",prazo:"15 dias",multa:"R$ 267,83 a R$ 2.563,37",gravidade:"media"},
+  {chave:"alvará-nao-visivel",cat:"comercio",titulo:"Alvará não fixado em local visível",descricao:"Estabelecimento sem o alvará de funcionamento exposto em local de fácil visualização pelo público",artigo:"Art. 194 c/c Art. 205",texto:"Afixar o Alvará de Funcionamento em local visível ao público no interior do estabelecimento",prazo:"10 dias",multa:"R$ 267,83 a R$ 2.563,37",gravidade:"leve"},
+
+  // ── PUBLICIDADE (44-51) ──
+  {chave:"publicidade-irregular",cat:"publicidade",titulo:"Publicidade irregular (sem licença)",descricao:"Instalação de placa, painel, outdoor ou letreiro sem licença da Secretaria ou em desacordo com as dimensões permitidas",artigo:"Art. 142 c/c Art. 173 e Art. 179",texto:"Retirar o dispositivo de publicidade irregular ou regularizar a licença junto à Secretaria Municipal de Serviços Urbanos",prazo:"30 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"windbanner",cat:"publicidade",titulo:"Wind banner / placa sobre calçada ou canteiro",descricao:"Colocação de wind banner ou placa de publicidade sobre calçadas ou canteiros centrais de vias públicas",artigo:"Art. 159, inciso VI c/c Art. 179",texto:"Retirar imediatamente o wind banner/placa instalado sobre a calçada ou canteiro central, vedada sua reinstalação sem amparo legal",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"pichacao",cat:"publicidade",titulo:"Pichação ou propaganda eleitoral irregular",descricao:"Pichação, inscrição a tinta ou fixação de placas/faixas em postes, viadutos, calçadas, muros e mobiliário urbano",artigo:"Art. 155 c/c Art. 158 e Art. 179, §único",texto:"Retirar/remover imediatamente a propaganda ou pichação irregular e restaurar a superfície atingida ao estado anterior",prazo:"Imediato",multa:"R$ 190,32 a R$ 1.824,16 (até R$ 11.357,11 §único Art. 179)",gravidade:"grave"},
+  {chave:"publicidade-arvore-poste",cat:"publicidade",titulo:"Publicidade em árvores ou postes",descricao:"Instalação de publicidade afixada em árvores de qualquer porte ou em postes de iluminação pública",artigo:"Art. 154, incisos III e XI c/c Art. 179",texto:"Retirar imediatamente a publicidade instalada em árvores e postes de iluminação, sendo proibida a reinstalação",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"publicidade-fora-padrao",cat:"publicidade",titulo:"Outdoor/painel acima da dimensão permitida",descricao:"Outdoor ou painel publicitário com dimensões ou altura superiores às previstas em lei (máx. 7 m de altura)",artigo:"Art. 168 c/c Art. 179",texto:"Adequar as dimensões e altura do dispositivo de publicidade aos padrões previstos em lei ou retirar o equipamento irregular",prazo:"30 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"publicidade-alcool-proibida",cat:"publicidade",titulo:"Publicidade de álcool em local proibido",descricao:"Propaganda de bebida alcoólica nas proximidades (raio de 100 m) de prédios públicos, creches, asilos ou estabelecimentos de ensino",artigo:"Art. 171 c/c Art. 179",texto:"Retirar imediatamente a publicidade de bebida alcoólica instalada a menos de 100 m da entrada/saída do estabelecimento protegido",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
+  {chave:"publicidade-sem-licenca-fachada",cat:"publicidade",titulo:"Letreiro/placa em fachada sem licença",descricao:"Letreiro, placa ou identificação afixada na fachada do imóvel sem licença e sem respeitar as dimensões máximas permitidas",artigo:"Art. 169 c/c Art. 179",texto:"Regularizar a licença para o letreiro/placa junto à Secretaria ou retirá-lo, respeitando as dimensões máximas previstas no Art. 169",prazo:"30 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"faixa-via-sem-licenca",cat:"publicidade",titulo:"Faixa atravessando a via pública sem licença",descricao:"Faixa de propaganda colocada atravessando a via pública sem licença especial da Secretaria",artigo:"Art. 159, inciso V c/c Art. 179",texto:"Retirar a faixa que atravessa a via pública ou requerer licença especial junto à Secretaria de Serviços Urbanos",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+
+  // ── TRÂNSITO / VIAS (52-57) ──
+  {chave:"obstrucao-transito",cat:"transito",titulo:"Obstrução do livre trânsito (Art. 69)",descricao:"Embaraçar ou impedir o livre trânsito de pedestres em passeios/praças ou de veículos em vias públicas",artigo:"Art. 69 c/c Art. 75",texto:"Desobstruir imediatamente a via/passeio, retirando o objeto, veículo ou estrutura que impede o livre trânsito de pedestres e veículos",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"estacionamento-calcada",cat:"transito",titulo:"Veículo/material estacionado sobre a calçada",descricao:"Estacionamento de veículos ou depósito de materiais sobre os passeios e calçadas",artigo:"Art. 70 c/c Art. 75",texto:"Retirar o veículo ou material depositado sobre o passeio/calçada, liberando a via para circulação de pedestres",prazo:"Imediato a 6 horas",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"via-rural-obstrucao",cat:"transito",titulo:"Obstrução/alteração em via rural municipal",descricao:"Fechar, estreitar, mudar ou dificultar a circulação em faixa de domínio de via rural sem licença do órgão competente",artigo:"Art. 102, inciso I c/c Art. 104",texto:"Desobstruir a faixa de domínio da via rural e restaurar as condições originais de circulação, sob pena de execução pela Prefeitura",prazo:"15 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"media"},
+  {chave:"veiculo-carga-excesso",cat:"transito",titulo:"Veículo de carga acima do limite de peso",descricao:"Veículo de transporte trafegando com carga ou peso superior ao fixado em sinalização sem licença prévia",artigo:"Art. 77 c/c Art. 82",texto:"Adequar o carregamento do veículo ao limite de peso previsto na sinalização ou obter a licença especial junto à Secretaria de Trânsito",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"explosivos-veiculo",cat:"transito",titulo:"Explosivos e inflamáveis no mesmo veículo",descricao:"Transporte simultâneo de explosivos e inflamáveis no mesmo veículo",artigo:"Art. 78 c/c Art. 82",texto:"Cessar imediatamente o transporte conjunto de explosivos e inflamáveis no mesmo veículo, adotando meios separados para cada tipo de carga",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
+  {chave:"palanque-sem-licenca",cat:"transito",titulo:"Coreto/palanque sem autorização",descricao:"Instalação de palanque provisório em logradouro público sem solicitação de aprovação à Secretaria com antecedência mínima de 3 dias úteis",artigo:"Art. 92 c/c Art. 94",texto:"Requerer autorização junto à Secretaria de Serviços Urbanos para instalação do palanque/coreto ou proceder à sua remoção imediata",prazo:"Imediato",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"leve"},
+
+  // ── ANIMAIS (58-60) ──
+  {chave:"animais-via-publica",cat:"animais",titulo:"Animais ruminantes/equinos soltos em vias",descricao:"Permanência de animais ruminantes/equinos soltos em vias e logradouros públicos da área urbana",artigo:"Art. 124 c/c Art. 128",texto:"Recolher o(s) animal(is) das vias públicas, evitando a reincidência da soltura em área urbana",prazo:"Imediato",multa:"R$ 183,10 a R$ 1.866,12 + apreensão do animal",gravidade:"media"},
+  {chave:"fezes-animal",cat:"animais",titulo:"Fezes de animal não recolhidas",descricao:"Deixar de recolher fezes de animais depositadas em vias e espaços públicos pelo respectivo tutor/condutor",artigo:"Art. 4º, inciso XXV c/c Art. 5º",texto:"Recolher imediatamente as fezes do animal depositadas na via pública e adotar a prática em todas as futuras conduções do animal",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"animal-amarra-arvore",cat:"animais",titulo:"Animal amarrado em cerca/árvore em via pública",descricao:"Amarrar animais em cercas, muros, grades ou árvores em vias e logradouros públicos",artigo:"Art. 127, inciso I c/c Art. 128",texto:"Retirar imediatamente o animal amarrado em cerca/muro/grade/árvore de via pública, conduzindo-o para local apropriado",prazo:"Imediato",multa:"R$ 183,10 a R$ 1.866,12",gravidade:"leve"},
+
+  // ── OBRAS / CONSTRUÇÃO (61-62) ──
+  {chave:"obstrucao-obra",cat:"obras",titulo:"Obstrução de via com material de obra",descricao:"Depósito de materiais de construção, tapumes ou entulho em via pública sem proteção/sinalização adequada",artigo:"Art. 20 c/c Art. 25",texto:"Remover o excesso de material, sinalizar adequadamente a obra e garantir a passagem segura de pedestres com tapumes ou cordas sinalizadas",prazo:"Imediato a 6 horas",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"obra-sem-sinalizar-pedestre",cat:"obras",titulo:"Obra sem sinalização de segurança de pedestres",descricao:"Execução de reforma ou construção com necessidade de interdição de passeio público sem garantir segurança dos pedestres",artigo:"Art. 21 c/c Art. 25",texto:"Instalar imediatamente tapumes ou corredor de cordas sinalizados, garantindo passagem segura de pedestres e obtendo autorização para interdição total, se necessário",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12 + interdição da obra",gravidade:"media"},
+  {chave:"obra-servico-sem-licenca-logradouro",cat:"obras",titulo:"Obra/serviço em logradouro sem licença",descricao:"Execução de serviços em calçadas e pistas de rolamento (extensão de cabos, água, esgoto) sem prévia licença da Secretaria de Obras",artigo:"Art. 105 c/c Art. 108",texto:"Paralisar imediatamente o serviço e requerer a licença junto à Secretaria Municipal de Obras antes do prosseguimento dos trabalhos",prazo:"Imediato",multa:"R$ 665,00 (multa específica do art. 108) em dobro na reincidência",gravidade:"media"},
+
+  // ── EVENTOS / DIVERSÕES (63-65) ──
+  {chave:"evento-sem-seguranca",cat:"eventos",titulo:"Evento/casa de shows sem AVCB ou segurança",descricao:"Casa de diversão ou evento sem extintores, saídas sinalizadas ou Auto de Vistoria do Corpo de Bombeiros",artigo:"Art. 39 c/c Art. 54 e Art. 191",texto:"Providenciar a regularização dos itens de segurança exigidos (sinalização de saída, extintores, AVCB) antes da reabertura ao público",prazo:"Imediato a 30 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
+  {chave:"evento-sem-licenca",cat:"eventos",titulo:"Evento/divertimento público sem licença",descricao:"Realização de divertimento público em via pública ou recinto fechado sem licença do Município",artigo:"Art. 38 c/c Art. 54",texto:"Requerer imediatamente a licença para o evento junto à Secretaria Municipal competente ou encerrar a realização do evento",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"circo-parque-sem-vistoria",cat:"eventos",titulo:"Circo/parque de diversões sem vistoria",descricao:"Circo, parque de diversões ou parque infantil franqueado ao público sem vistoria das instalações pelas autoridades competentes",artigo:"Art. 45 c/c Art. 54",texto:"Paralisar imediatamente o acesso do público até que todas as instalações sejam vistoriadas pelas autoridades competentes",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
+];
+
+// ════════════════════════════════════════════════
+// ECOPONTOS — 16 UNIDADES (fonte oficial Prefeitura Uberlândia, 2025)
+// ════════════════════════════════════════════════
+const ECOPONTOS = [
+  {bairro:"Daniel Fonseca",end:"Rua Itabira, 1720",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+Itabira+1720+Uberlandia+MG"},
+  {bairro:"Guarani",end:"Rua do Repentista, 350",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+do+Repentista+350+Uberlandia+MG"},
+  {bairro:"Jardim Canaã",end:"Av. Palestina – esq. c/ Rua Menfins e Biblios",regiao:"Leste",maps:"https://maps.google.com/?q=Avenida+Palestina+esq+Menfins+Uberlandia+MG"},
+  {bairro:"Lagoinha",end:"Alameda Arnolde de Almeida Castro, 172",regiao:"Sul",maps:"https://maps.google.com/?q=Alameda+Arnolde+de+Almeida+Castro+172+Uberlandia+MG"},
+  {bairro:"Luizote de Freitas",end:"Rua Wilson Gonçalves de Souza, 10 – esq. c/ Rua Paulo Margonari",regiao:"Oeste",maps:"https://maps.google.com/?q=Rua+Wilson+Goncalves+de+Souza+10+Uberlandia+MG"},
+  {bairro:"Mansour",end:"Rua Rio Corumbá, 20 – esq. c/ Av. Rio Nilo",regiao:"Oeste",maps:"https://maps.google.com/?q=Rua+Rio+Corumba+20+Uberlandia+MG"},
+  {bairro:"Monte Hebron",end:"Av. Benedita Fagundes da Costa, 12 – esq. c/ Av. Guimara Alves Oliveira",regiao:"Norte",maps:"https://maps.google.com/?q=Avenida+Benedita+Fagundes+da+Costa+12+Uberlandia+MG"},
+  {bairro:"Morumbi",end:"Rua Campeio, 247 – esq. c/ Av. José Maria Ribeiro",regiao:"Oeste",maps:"https://maps.google.com/?q=Rua+Campeio+247+Uberlandia+MG"},
+  {bairro:"Pequis",end:"Rua do Tapiti, 250",regiao:"Norte",maps:"https://maps.google.com/?q=Rua+do+Tapiti+250+Uberlandia+MG"},
+  {bairro:"Roosevelt",end:"Rua Olívia de Freitas Guimarães, 950",regiao:"Norte",maps:"https://maps.google.com/?q=Rua+Olivia+de+Freitas+Guimaraes+950+Uberlandia+MG"},
+  {bairro:"Santa Rosa",end:"Rua Ângela Alckmin, 211 – esq. c/ Rua Elis Regina",regiao:"Sul",maps:"https://maps.google.com/?q=Rua+Angela+Alckmin+211+Uberlandia+MG"},
+  {bairro:"São Jorge",end:"Av. Serra do Mar, 411 – esq. c/ Av. Serra do Espinhaço",regiao:"Leste",maps:"https://maps.google.com/?q=Avenida+Serra+do+Mar+411+Uberlandia+MG"},
+  {bairro:"São Lucas",end:"Rua do Cientista – esq. c/ Rua do Gari",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+do+Cientista+Rua+do+Gari+Uberlandia+MG"},
+  {bairro:"Segismundo Pereira",end:"Rua Sebastião Alves Nunes, 49 – esq. c/ Rua Dr. Laerte V. Gonçalves",regiao:"Sul",maps:"https://maps.google.com/?q=Rua+Sebastiao+Alves+Nunes+49+Uberlandia+MG"},
+  {bairro:"Shopping Park",end:"Av. Sul Americana, 627",regiao:"Sul",maps:"https://maps.google.com/?q=Avenida+Sul+Americana+627+Uberlandia+MG"},
+  {bairro:"Tocantins",end:"Rua Docelino de Freitas Costa – esq. c/ Rua Bernadete Silva Arantes (ao lado do Cond. Morada do Sol)",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+Docelino+de+Freitas+Costa+Uberlandia+MG"},
+];
+
+// ════════════════════════════════════════════════
+// ESTADO
+// ════════════════════════════════════════════════
+let currentScreen='busca', currentCat='todos', currentQuery='', currentItem=null;
+
+// Atualiza badge do count
+function updateBadge(n){document.getElementById('countBadge').textContent=n+(n===DB.length?'':'/'+DB.length)+' infrações'}
+
+// ════════════════════════════════════════════════
+// RENDER LISTA
+// ════════════════════════════════════════════════
+function renderList(){
+  const q=currentQuery.toLowerCase().trim();
+  const filtered=DB.filter(d=>{
+    const mc=currentCat==='todos'||d.cat===currentCat;
+    const mq=!q||[d.chave,d.titulo,d.descricao,d.artigo,d.texto].some(f=>f.toLowerCase().includes(q));
+    return mc&&mq;
+  });
+  const list=document.getElementById('infractionList');
+  const empty=document.getElementById('emptyState');
+  updateBadge(filtered.length);
+  if(!filtered.length){list.innerHTML='';empty.style.display='block';return}
+  empty.style.display='none';
+  list.innerHTML=filtered.map(d=>`
+    <div class="infraction-card" onclick="openDetail('${d.chave}')">
+      <div class="card-header">
+        <div class="card-badge ${badgeClass(d.gravidade)}">${ICONS[d.cat]||ICONS.limpeza}</div>
+        <div class="card-info">
+          <div class="card-title">${d.titulo}</div>
+          <div class="card-desc">${d.descricao}</div>
+          <div class="card-chave">${d.chave}</div>
+        </div>
+      </div>
+      <div class="sev-bar sev-${d.gravidade}"></div>
+      <div class="card-footer">
+        <span class="card-art ${artClass(d.gravidade)}">${d.artigo.split(' c/c')[0]}</span>
+        <span class="card-multa">${d.multa.split(' a ')[0].replace('(dobro','').trim()}+</span>
+        <span style="color:var(--cinza)">›</span>
+      </div>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════
+// DETALHE
+// ════════════════════════════════════════════════
+function openDetail(chave){
+  currentItem=DB.find(d=>d.chave===chave);
+  if(!currentItem)return;
+  const{titulo,descricao,artigo,texto,prazo,multa,gravidade,cat,chave:cv}=currentItem;
+  document.getElementById('detailContent').innerHTML=`
+    <div class="detail-header">
+      <div class="detail-badge">${ICONS[cat]||ICONS.limpeza}</div>
+      <div>
+        <div class="detail-title">${titulo}</div>
+        <div class="detail-chave">${cv}</div>
+      </div>
+    </div>
+    <div class="section-label">Texto para o auto de notificação</div>
+    <div class="info-box auto-text">${texto}</div>
+    <button class="copy-btn" id="copyAutoBtn" onclick="copyAuto()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      Copiar texto do auto
+    </button>
+    <div class="art-box">
+      <div class="art-title">Artigo violado</div>
+      <div class="art-val">${artigo}</div>
+    </div>
+    <div class="prazo-box">
+      <div class="prazo-title">⏱ Prazo para regularização</div>
+      <div class="prazo-val">${prazo}</div>
+    </div>
+    <div class="multa-box">
+      <div class="multa-title">Multa prevista — Res. SESURB nº 01/2025</div>
+      <div class="multa-val">${multa}</div>
+      <div class="multa-sub">Em dobro na reincidência dentro de 3 anos</div>
+    </div>
+    <button class="copy-btn secondary" onclick="copyAll()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Copiar notificação completa
+    </button>`;
+  showScreen('auto');
+}
+
+function copyAuto(){
+  if(!currentItem)return;
+  navigator.clipboard.writeText(currentItem.texto).then(()=>{
+    showSnackbar('✓ Texto do auto copiado!');
+    const btn=document.getElementById('copyAutoBtn');
+    if(!btn)return;
+    btn.classList.add('copied');
+    btn.textContent='✓ Copiado!';
+    setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar texto do auto`;},2500);
+  });
+}
+
+function copyAll(){
+  if(!currentItem)return;
+  const{titulo,artigo,texto,prazo,multa}=currentItem;
+  const full=`NOTIFICAÇÃO — ${titulo}\n\nPELA PRESENTE FICA V. Sa. NOTIFICADA PARA:\n${texto}\n\nARTIGO DE LEI VIOLADO: ${artigo}\n\nPRAZO PARA REGULARIZAÇÃO: ${prazo}\n\nCONSEQUÊNCIA DO NÃO CUMPRIMENTO:\nAuto de Infração c/ multa de ${multa} (Res. SESURB nº 01/2025), em dobro na reincidência; podendo a Secretaria executar o serviço e cobrar os custos.\n\nSujeito às penalidades do Código de Posturas Lei nº 10.741/2011.`;
+  navigator.clipboard.writeText(full).then(()=>showSnackbar('✓ Notificação completa copiada!'));
+}
+
+// ════════════════════════════════════════════════
+// ECOPONTOS
+// ════════════════════════════════════════════════
+const REGIOES=['Todos','Norte','Sul','Leste','Oeste'];
+let ecoFiltro='Todos';
+
+function renderEcopontos(){
+  const filtered=ECOPONTOS.filter(e=>ecoFiltro==='Todos'||e.regiao===ecoFiltro);
+  document.getElementById('ecopontosList').innerHTML=filtered.map((e,i)=>`
+    <div class="ecoponto-card">
+      <div class="ecoponto-num">${ECOPONTOS.indexOf(e)+1}</div>
+      <div class="ecoponto-info">
+        <div class="ecoponto-bairro">${e.bairro}</div>
+        <div class="ecoponto-end">${e.end}</div>
+        <span class="ecoponto-horario">Região ${e.regiao} · 7h–19h · Todos os dias</span>
+        <div>
+          <button class="ecoponto-maps-btn" onclick="window.open('${e.maps}','_blank')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 018 8c0 5.5-8 14-8 14S4 15.5 4 10a8 8 0 018-8z"/></svg>
+            Ver no mapa
+          </button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function buildEcoChips(){
+  const s=document.getElementById('screen-ecopontos');
+  const row=document.createElement('div');
+  row.className='eco-chips';
+  REGIOES.forEach(r=>{
+    const c=document.createElement('div');
+    c.className='chip'+(r==='Todos'?' active':'');
+    c.textContent=r==='Todos'?'Todas as regiões':r;
+    c.onclick=()=>{
+      row.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');
+      ecoFiltro=r;
+      renderEcopontos();
+    };
+    row.appendChild(c);
+  });
+  s.insertBefore(row,s.querySelector('#ecopontosList'));
+}
+
+// ════════════════════════════════════════════════
+// NAVEGAÇÃO
+// ════════════════════════════════════════════════
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  currentScreen=name;
+  document.querySelector('.content').scrollTop=0;
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(btn.dataset.tab===currentScreen&&currentScreen!=='auto')return;
+    showScreen(btn.dataset.tab);
+    if(btn.dataset.tab==='busca')renderList();
+  });
+});
+document.getElementById('backBtn').addEventListener('click',()=>showScreen('busca'));
+
+// ════════════════════════════════════════════════
+// BUSCA
+// ════════════════════════════════════════════════
+const si=document.getElementById('searchInput');
+const sc=document.getElementById('searchClear');
+si.addEventListener('input',()=>{
+  currentQuery=si.value;
+  sc.classList.toggle('visible',!!currentQuery);
+  if(currentScreen!=='busca')showScreen('busca');
+  renderList();
+});
+sc.addEventListener('click',()=>{si.value='';currentQuery='';sc.classList.remove('visible');si.focus();renderList();});
+
+// ════════════════════════════════════════════════
+// CHIPS CATEGORIAS
+// ════════════════════════════════════════════════
+document.getElementById('categoryChips').addEventListener('click',e=>{
+  const chip=e.target.closest('.chip');
+  if(!chip)return;
+  document.querySelectorAll('#categoryChips .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  currentCat=chip.dataset.cat;
+  renderList();
+});
+
+// ACCORDION CARTILHA
+function toggleSection(h){h.closest('.cartilha-section').classList.toggle('open')}
+
+// SNACKBAR
+function showSnackbar(msg){const s=document.getElementById('snackbar');s.textContent=msg;s.classList.add('show');setTimeout(()=>s.classList.remove('show'),2500)}
+
+// INSTALL PWA
+let dp;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;document.getElementById('installBanner').style.display='flex'});
+document.getElementById('installBtn')?.addEventListener('click',()=>{if(dp){dp.prompt();dp.userChoice.then(()=>{dp=null;document.getElementById('installBanner').style.display='none'})}});
+document.getElementById('closeInstall')?.addEventListener('click',()=>document.getElementById('installBanner').style.display='none');
+
+// SERVICE WORKER
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
+
+// INIT
+renderList();
+buildEcoChips();
+renderEcopontos();
+</script>
+</body>
+</html>
