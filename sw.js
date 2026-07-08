@@ -1,4 +1,4 @@
-const CACHE = 'posturas-v2';
+const CACHE = 'posturas-v3';
 const ASSETS = [
   './',
   './index.html',

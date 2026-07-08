@@ -28,7 +28,8 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:-apple-system,'Sego
 .topbar{background:var(--azul);padding:calc(var(--safe-top) + 14px) 18px 12px;flex-shrink:0;position:relative;z-index:10}
 .topbar-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .app-brand{display:flex;align-items:center;gap:10px}
-.app-icon{width:36px;height:36px;border-radius:10px;background:var(--amarelo);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:var(--azul);letter-spacing:-1px}
+.app-icon{width:36px;height:36px;border-radius:10px;background:var(--amarelo);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:var(--azul);letter-spacing:-1px;overflow:hidden}
+.app-icon img{width:100%;height:100%;object-fit:cover}
 .app-title{color:white;font-weight:700;font-size:16px;line-height:1.1}
 .app-title small{display:block;font-size:10px;font-weight:400;color:rgba(255,255,255,.65)}
 .count-badge{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
@@ -140,6 +141,7 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:-apple-system,'Sego
 .ecoponto-horario{font-size:11px;font-weight:600;color:var(--verde);background:var(--verde-bg);padding:2px 9px;border-radius:20px;display:inline-block}
 .ecoponto-maps-btn{margin-top:7px;display:flex;align-items:center;gap:5px;background:none;border:1.5px solid var(--azul);color:var(--azul);border-radius:8px;padding:5px 11px;font-size:11.5px;font-weight:700;cursor:pointer}
 .ecoponto-maps-btn svg{width:13px;height:13px}
+.critico-nivel{font-size:13px;letter-spacing:1px;background:var(--vm-bg);color:var(--vermelho);padding:2px 9px;border-radius:20px;display:inline-block;font-weight:700}
 .eco-header{background:var(--verde);border-radius:var(--radius);padding:14px;margin-bottom:13px;color:white}
 .eco-header-title{font-weight:800;font-size:16px;margin-bottom:4px}
 .eco-header-sub{font-size:12px;opacity:.88;line-height:1.4}
@@ -177,7 +179,7 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:-apple-system,'Sego
   <div class="topbar">
     <div class="topbar-row">
       <div class="app-brand">
-        <div class="app-icon">P</div>
+        <div class="app-icon"><img src="images/mascote-posturinha.png" alt="Posturinha"></div>
         <div class="app-title">Posturas UDI <small>Fiscalização · Lei nº 10.741/2011</small></div>
       </div>
       <span class="count-badge" id="countBadge">0</span>
@@ -203,6 +205,9 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:-apple-system,'Sego
     <button class="tab-btn" data-tab="ecopontos">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.35-9.33-8.91C1.2 8.4 2.9 5 6.2 5c2 0 3.3 1.1 3.8 2C10.5 6.1 11.8 5 13.8 5c3.3 0 5 3.4 3.53 7.09C19 16.65 12 21 12 21z"/></svg>Ecopontos
     </button>
+    <button class="tab-btn" data-tab="pontoscriticos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Pontos Críticos
+    </button>
   </div>
 
   <!-- CONTEÚDO -->
@@ -215,8 +220,8 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:-apple-system,'Sego
         <div class="chip" data-cat="limpeza">🧹 Limpeza</div>
         <div class="chip" data-cat="calcada">🏠 Calçadas</div>
         <div class="chip" data-cat="som">🔊 Som</div>
-        <div class="chip" data-cat="comercio">🪪 Comércio</div>
-        <div class="chip" data-cat="publicidade">🪧 Publicidade</div>
+        <div class="chip" data-cat="comercio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;vertical-align:-1px;margin-right:2px"><rect x="4" y="5" width="16" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><line x1="13" y1="10" x2="17" y2="10"/><line x1="13" y1="13" x2="17" y2="13"/></svg> Comércio</div>
+        <div class="chip" data-cat="publicidade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;vertical-align:-1px;margin-right:2px"><rect x="3" y="5" width="14" height="10" rx="1"/><path d="M17 8l4-2v8l-4-2"/></svg> Publicidade</div>
         <div class="chip" data-cat="transito">🚗 Trânsito</div>
         <div class="chip" data-cat="animais">🐾 Animais</div>
         <div class="chip" data-cat="obras">🚧 Obras</div>
@@ -302,6 +307,22 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:-apple-system,'Sego
           <div class="cartilha-item"><div class="cartilha-dot dot-amarelo"></div><div class="cartilha-item-text"><strong>Depósitos de ferro-velho: muro de alvenaria ≥ 2,50 m</strong>Proibido expor material nos passeios ou fixar nos muros.<span class="art-tag">Art. 200 e 201</span></div></div>
         </div>
       </div>
+
+      <div class="cartilha-section">
+        <div class="cartilha-section-header" onclick="toggleSection(this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 6l2 14a2 2 0 002 2h10a2 2 0 002-2l2-14M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+          <span class="cartilha-section-title">Classificação de resíduos sólidos</span>
+          <svg class="cartilha-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="cartilha-section-body">
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>♻ Recicláveis</strong>Papel, papelão, plástico, vidro e metal limpos e secos. Descarte na coleta seletiva ou leve a um Ecoponto.</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-verde"></div><div class="cartilha-item-text"><strong>🍎 Orgânicos</strong>Restos de comida, cascas e podas de jardim. Idealmente separados dos recicláveis; podem virar compostagem.</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-amarelo"></div><div class="cartilha-item-text"><strong>🗑 Rejeitos</strong>Lixo que não pode ser reciclado nem compostado (papel higiênico, absorventes, cerâmica, isopor sujo). Vai para a coleta comum.</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-vermelho"></div><div class="cartilha-item-text"><strong>⚠ Perigosos</strong>Pilhas, baterias, lâmpadas, eletrônicos, óleo de cozinha, tintas e remédios vencidos. Nunca descarte no lixo comum — leve a um Ecoponto ou ponto de coleta específico.</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-amarelo"></div><div class="cartilha-item-text"><strong>🧱 Entulho e obra</strong>Restos de construção/demolição devem ser levados a um Ecoponto ou área licenciada, nunca descartados em terrenos ou vias públicas.</div></div>
+          <div class="cartilha-item"><div class="cartilha-dot dot-amarelo"></div><div class="cartilha-item-text"><strong>Referência</strong>IBAMA, Instrução Normativa nº 13/2012 — Lista Brasileira de Resíduos Sólidos.</div></div>
+        </div>
+      </div>
     </div>
 
     <!-- TELA ECOPONTOS -->
@@ -311,6 +332,15 @@ html,body{height:100%;width:100%;overflow:hidden;font-family:-apple-system,'Sego
         <div class="eco-header-sub">16 unidades • Funcionamento: todos os dias, das 7h às 19h • Gratuito para pequenos geradores<br>Dúvidas: fernandasousa@uberlandia.mg.gov.br</div>
       </div>
       <div id="ecopontosList"></div>
+    </div>
+
+    <!-- TELA PONTOS CRÍTICOS -->
+    <div class="screen" id="screen-pontoscriticos">
+      <div class="eco-header">
+        <div class="eco-header-title">☢ Pontos Críticos de Uberlândia</div>
+        <div class="eco-header-sub">46 pontos monitorados pela Fiscalização de Posturas • Nível de criticidade indicado por ☢</div>
+      </div>
+      <div id="pontosCriticosList"></div>
     </div>
 
   </div><!-- /content -->
@@ -343,15 +373,15 @@ const DB = [
   // ── LIMPEZA (1-12) ──
   {chave:"terreno-sujo",cat:"limpeza",titulo:"Terreno sujo / com mato alto",descricao:"Terreno baldio ou lote não edificado coberto de mato, com acúmulo de lixo ou entulho",artigo:"Art. 14, §2º c/c Art. 19",texto:"Promover a limpeza, capina e drenagem do terreno, retirando todo lixo, entulho e resíduo de qualquer natureza",prazo:"15 dias úteis",multa:"R$ 194,68 a R$ 1.866,12",gravidade:"leve"},
   {chave:"descarte-lixo",cat:"limpeza",titulo:"Descarte irregular de lixo/entulho",descricao:"Depósito de entulho, lixo ou resíduos em logradouro público, terreno de terceiros ou área inadequada",artigo:"Art. 4º, incisos III, XIII e XIX c/c Art. 5º",texto:"Cessar imediatamente o descarte irregular e remover o material depositado na via pública/terreno, destinando-o corretamente",prazo:"Imediato ou 15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
-  {chave:"queimada",cat:"limpeza",titulo:"Queimada / queima de lixo",descricao:"Queima de lixo, mato ou resíduos a céu aberto em terreno urbano ou via pública",artigo:"Art. 10 c/c Art. 4º, parágrafo único e Art. 13",texto:"Cessar imediatamente a queimada e adotar meios adequados de limpeza e destinação do material",prazo:"Imediato",multa:"R$ 360,25 a R$ 2.882,04 (dobro se decorrente de queimada)",gravidade:"grave"},
-  {chave:"panfleto-papel-picado",cat:"limpeza",titulo:"Panfletos / papel picado em via pública",descricao:"Lançamento de papéis picados, confetes, serpentinas, volantes ou panfletos nas vias e logradouros públicos",artigo:"Art. 4º, inciso XVI c/c Art. 5º",texto:"Cessar a distribuição/lançamento de panfletos e materiais similares nas vias públicas e providenciar a limpeza imediata do local",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
-  {chave:"lavagem-via-publica",cat:"limpeza",titulo:"Lavagem de roupa/animal em logradouro",descricao:"Lavagem de roupas ou animais em logradouros públicos ou banho em chafarizes sem autorização",artigo:"Art. 4º, inciso I c/c Art. 5º",texto:"Cessar imediatamente a lavagem de roupas/animais ou banho em local público não autorizado",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"queimada",cat:"limpeza",titulo:"Queimada / queima de lixo",descricao:"Queima de lixo, mato ou resíduos a céu aberto em terreno urbano ou via pública",artigo:"Art. 10 c/c Art. 4º, parágrafo único e Art. 13",texto:"Cessar imediatamente a queimada e adotar meios adequados de limpeza e destinação do material",prazo:"5 minutos",multa:"R$ 360,25 a R$ 2.882,04 (dobro se decorrente de queimada)",gravidade:"grave"},
+  {chave:"panfleto-papel-picado",cat:"limpeza",titulo:"Panfletos / papel picado em via pública",descricao:"Lançamento de papéis picados, confetes, serpentinas, volantes ou panfletos nas vias e logradouros públicos",artigo:"Art. 4º, inciso XVI c/c Art. 5º",texto:"Cessar a distribuição/lançamento de panfletos e materiais similares nas vias públicas e providenciar a limpeza imediata do local",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"lavagem-via-publica",cat:"limpeza",titulo:"Lavagem de roupa/animal em logradouro",descricao:"Lavagem de roupas ou animais em logradouros públicos ou banho em chafarizes sem autorização",artigo:"Art. 4º, inciso I c/c Art. 5º",texto:"Cessar imediatamente a lavagem de roupas/animais ou banho em local público não autorizado",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
   {chave:"agua-servida",cat:"limpeza",titulo:"Escoamento de água servida para a rua",descricao:"Permitir o escoamento de águas servidas de residências ou estabelecimentos para as vias públicas",artigo:"Art. 4º, inciso XXVI c/c Art. 5º",texto:"Cessar o escoamento de águas servidas para a via pública e providenciar destinação adequada (rede de esgoto)",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
   {chave:"fios-postes",cat:"limpeza",titulo:"Fios/cabos desalinhados em postes",descricao:"Fios, cabos ou equipamentos excedentes fixados em postes desalinhados da fiação principal",artigo:"Art. 4º, inciso XXIV c/c Art. 5º",texto:"Realinhar ou remover os fios/cabos excedentes fixados de forma irregular no poste, adequando-os ao conjunto da fiação",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
-  {chave:"oleo-graca-via",cat:"limpeza",titulo:"Derramamento de óleo/graxa em via pública",descricao:"Derramar óleo, graxa, cal ou outros produtos capazes de afetar a higiene das vias públicas",artigo:"Art. 4º, inciso X c/c Art. 5º",texto:"Cessar o derramamento e providenciar a limpeza completa do trecho da via pública afetado pelo óleo/graxa/cal",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
-  {chave:"animal-morto-via",cat:"limpeza",titulo:"Animal morto em logradouro público",descricao:"Colocar ou deixar animal morto em vias e logradouros públicos, obrigação de conduzir ao aterro",artigo:"Art. 127, inciso III c/c Art. 128",texto:"Remover imediatamente o animal morto do logradouro público, destinando-o ao aterro sanitário conforme normas sanitárias vigentes",prazo:"Imediato",multa:"R$ 183,10 a R$ 1.866,12",gravidade:"media"},
-  {chave:"varricao-sarjeta",cat:"limpeza",titulo:"Varrição de lixo para sarjeta/boca de lobo",descricao:"Varrer lixo ou detritos sólidos para sarjetas, valas ou equipamentos de captação de água pluvial dos logradouros",artigo:"Art. 4º, inciso XIV c/c Art. 5º",texto:"Cessar imediatamente a varrição de lixo para sarjetas ou bocas de lobo e recolher o material adequadamente",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
-  {chave:"carga-sem-cobertura",cat:"limpeza",titulo:"Transporte de carga sem cobertura adequada",descricao:"Transportar materiais a granel (areia, terra, pedra, argila) sem manejo, cobertura ou proteção adequada",artigo:"Art. 4º, inciso XXVII c/c Art. 5º",texto:"Providenciar cobertura ou proteção adequada para o transporte do material, evitando espalhamento nas vias públicas",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"oleo-graca-via",cat:"limpeza",titulo:"Derramamento de óleo/graxa em via pública",descricao:"Derramar óleo, graxa, cal ou outros produtos capazes de afetar a higiene das vias públicas",artigo:"Art. 4º, inciso X c/c Art. 5º",texto:"Cessar o derramamento e providenciar a limpeza completa do trecho da via pública afetado pelo óleo/graxa/cal",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"animal-morto-via",cat:"limpeza",titulo:"Animal morto em logradouro público",descricao:"Colocar ou deixar animal morto em vias e logradouros públicos, obrigação de conduzir ao aterro",artigo:"Art. 127, inciso III c/c Art. 128",texto:"Remover imediatamente o animal morto do logradouro público, destinando-o ao aterro sanitário conforme normas sanitárias vigentes",prazo:"5 minutos",multa:"R$ 183,10 a R$ 1.866,12",gravidade:"media"},
+  {chave:"varricao-sarjeta",cat:"limpeza",titulo:"Varrição de lixo para sarjeta/boca de lobo",descricao:"Varrer lixo ou detritos sólidos para sarjetas, valas ou equipamentos de captação de água pluvial dos logradouros",artigo:"Art. 4º, inciso XIV c/c Art. 5º",texto:"Cessar imediatamente a varrição de lixo para sarjetas ou bocas de lobo e recolher o material adequadamente",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"carga-sem-cobertura",cat:"limpeza",titulo:"Transporte de carga sem cobertura adequada",descricao:"Transportar materiais a granel (areia, terra, pedra, argila) sem manejo, cobertura ou proteção adequada",artigo:"Art. 4º, inciso XXVII c/c Art. 5º",texto:"Providenciar cobertura ou proteção adequada para o transporte do material, evitando espalhamento nas vias públicas",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
   {chave:"imovel-ruina",cat:"limpeza",titulo:"Imóvel abandonado em ruína",descricao:"Edificação abandonada em estado de ruína com risco à segurança da vizinhança, depósito de lixo ou água insalubre",artigo:"Art. 16 c/c Art. 17 e Art. 19",texto:"Promover a demolição do imóvel e a destinação ambientalmente correta do entulho gerado",prazo:"Conforme notificação prévia específica",multa:"R$ 194,68 a R$ 1.866,12 + ação judicial para demolição",gravidade:"grave"},
 
   // ── CALÇADAS / IMÓVEIS (13-24) ──
@@ -359,7 +389,7 @@ const DB = [
   {chave:"terreno-sem-muro",cat:"calcada",titulo:"Terreno sem fechamento/muro",descricao:"Lote ou terreno vago sem cercamento das divisas, permitindo carreamento de material para a via pública",artigo:"Art. 136 c/c Art. 141",texto:"Fechar o terreno em todas as suas divisas, sendo vedado o uso de arame farpado",prazo:"30 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"leve"},
   {chave:"calcada-mesas",cat:"calcada",titulo:"Mesas/cadeiras irregulares na calçada (Art. 55)",descricao:"Mesas, cadeiras ou objetos ocupando passeio público sem licença da Secretaria ou sem respeitar faixa livre de 1,20 m",artigo:"Art. 55, inciso III c/c Art. 58",texto:"Retirar o mobiliário da calçada ou regularizar a licença de uso e ocupação do solo, respeitando a faixa de circulação de pedestres de no mínimo 1,20 m livre",prazo:"10 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
   {chave:"calcada-inadimplente",cat:"calcada",titulo:"Taxa de ocupação de calçada não paga",descricao:"Estabelecimento com mesas e cadeiras em calçada com 3 ou mais parcelas da taxa de uso e ocupação do solo em atraso",artigo:"Art. 55, §5º c/c Art. 58",texto:"Regularizar o pagamento da taxa de uso e ocupação da calçada e retirar o mobiliário até a quitação dos débitos em aberto",prazo:"10 dias",multa:"R$ 194,69 a R$ 1.866,12 + cassação da licença",gravidade:"media"},
-  {chave:"calcada-obstrucao",cat:"calcada",titulo:"Calçada obstruída por objetos/material",descricao:"Objetos, materiais ou equipamentos depositados na calçada impedindo o trânsito livre de pedestres",artigo:"Art. 55, inciso I c/c Art. 58",texto:"Retirar imediatamente os objetos/materiais que obstruem a faixa de circulação de pedestres na calçada, garantindo passagem livre mínima de 1,20 m",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"calcada-obstrucao",cat:"calcada",titulo:"Calçada obstruída por objetos/material",descricao:"Objetos, materiais ou equipamentos depositados na calçada impedindo o trânsito livre de pedestres",artigo:"Art. 55, inciso I c/c Art. 58",texto:"Retirar imediatamente os objetos/materiais que obstruem a faixa de circulação de pedestres na calçada, garantindo passagem livre mínima de 1,20 m",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
   {chave:"mobiliario-obstrucao",cat:"calcada",titulo:"Mobiliário urbano obstruindo pedestres",descricao:"Elemento de mobiliário urbano (banca, totem, quiosque etc.) obstruindo a faixa de circulação de pedestres ou acesso de PCD",artigo:"Art. 62, inciso II c/c Art. 67",texto:"Reposicionar ou remover o mobiliário urbano que obstrui a faixa de circulação de pedestres e o acesso de pessoas com deficiência",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
   {chave:"toldo-irregular",cat:"calcada",titulo:"Toldo fora das dimensões permitidas",descricao:"Instalação de toldo que excede 80% da largura do passeio, com balanço acima de 2 m ou abaixo da altura mínima de 2,20 m",artigo:"Art. 183 c/c Art. 186",texto:"Adequar as dimensões do toldo aos limites de largura e altura previstos em lei, retirando o excesso de balanço e respeitando a altura mínima de 2,20 m",prazo:"30 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"media"},
   {chave:"arame-farpado-cerca",cat:"calcada",titulo:"Cerca com arame farpado em área urbana",descricao:"Fechamento de terreno urbano usando arame farpado, proibido no perímetro urbano por risco a pedestres",artigo:"Art. 135 c/c Art. 141",texto:"Substituir o arame farpado por outro tipo de fechamento adequado, como tela, gradil ou muro, dentro do prazo estabelecido",prazo:"30 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"media"},
@@ -369,82 +399,135 @@ const DB = [
   {chave:"quintal-mato",cat:"calcada",titulo:"Quintal/pátio com mato e entulho",descricao:"Manutenção de lotes, quintais ou pátios na zona urbana com matagal, entulho, poça d'água parada ou materiais nocivos à saúde",artigo:"Art. 4º, inciso XXIII c/c Art. 5º",texto:"Limpar e manter o quintal/pátio isento de matagal, entulho, lixo e água parada, conforme o prazo estabelecido nesta notificação",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
 
   // ── SOM / PERTURBAÇÃO (25-30) ──
-  {chave:"poluicao-sonora",cat:"som",titulo:"Poluição sonora / perturbação do sossego",descricao:"Ruídos excessivos provenientes de som, instrumentos ou viva voz em estabelecimento, perturbando a vizinhança",artigo:"Art. 35, inciso II c/c Art. 36",texto:"Adequar o nível de som do estabelecimento, evitando perturbação ao sossego da vizinhança",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
-  {chave:"carro-de-som",cat:"som",titulo:"Carro de som sem licença",descricao:"Veículo com alto-falante fazendo propaganda em local público sem licença ou fora do horário permitido",artigo:"Art. 167 c/c Art. 36",texto:"Cessar a propaganda sonora ou apresentar a licença da Coordenadoria de Trânsito e Transportes para a atividade",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
-  {chave:"escapamento-moto",cat:"som",titulo:"Escapamento de moto irregular",descricao:"Uso/venda de escapamento para motocicleta que emita ruído em desconformidade com as normas do CONAMA",artigo:"Art. 35-A c/c Art. 36",texto:"Substituir o escapamento por outro que atenda às normas técnicas e limites de ruído estabelecidos pelos órgãos competentes",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
-  {chave:"culto-ruido",cat:"som",titulo:"Igreja/templo com ruído excessivo",descricao:"Local de culto com cerimônias, cânticos ou palmas causando perturbação à vizinhança",artigo:"Art. 133 c/c Art. 134",texto:"Adequar o nível sonoro das cerimônias e atividades do templo/igreja para não perturbar os vizinhos nem no período noturno",prazo:"Imediato",multa:"R$ 333,28 a R$ 1.866,12",gravidade:"media"},
-  {chave:"pregao-viva-voz",cat:"som",titulo:"Pregão/propaganda a viva voz em via pública",descricao:"Ruídos produzidos por pregões, anúncios ou propaganda a viva voz em via pública causando perturbação",artigo:"Art. 35, inciso I c/c Art. 36",texto:"Cessar imediatamente a prática de pregão ou propaganda a viva voz que cause perturbação ou incômodo à população",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
-  {chave:"caixa-som-exterior",cat:"som",titulo:"Caixa de som voltada para área externa",descricao:"Colocação de caixas de som ou equipamentos de emissão de som nas áreas internas voltadas para as áreas externas",artigo:"Art. 35, parágrafo único c/c Art. 36",texto:"Retirar ou reposicionar as caixas de som de forma que não emitam som diretamente para a área externa do estabelecimento",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"poluicao-sonora",cat:"som",titulo:"Poluição sonora / perturbação do sossego",descricao:"Ruídos excessivos provenientes de som, instrumentos ou viva voz em estabelecimento, perturbando a vizinhança",artigo:"Art. 35, inciso II c/c Art. 36",texto:"Adequar o nível de som do estabelecimento, evitando perturbação ao sossego da vizinhança",prazo:"5 minutos",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"carro-de-som",cat:"som",titulo:"Carro de som sem licença",descricao:"Veículo com alto-falante fazendo propaganda em local público sem licença ou fora do horário permitido",artigo:"Art. 167 c/c Art. 36",texto:"Cessar a propaganda sonora ou apresentar a licença da Coordenadoria de Trânsito e Transportes para a atividade",prazo:"5 minutos",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"escapamento-moto",cat:"som",titulo:"Escapamento de moto irregular",descricao:"Uso/venda de escapamento para motocicleta que emita ruído em desconformidade com as normas do CONAMA",artigo:"Art. 35-A c/c Art. 36",texto:"Substituir o escapamento por outro que atenda às normas técnicas e limites de ruído estabelecidos pelos órgãos competentes",prazo:"5 minutos",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"culto-ruido",cat:"som",titulo:"Igreja/templo com ruído excessivo",descricao:"Local de culto com cerimônias, cânticos ou palmas causando perturbação à vizinhança",artigo:"Art. 133 c/c Art. 134",texto:"Adequar o nível sonoro das cerimônias e atividades do templo/igreja para não perturbar os vizinhos nem no período noturno",prazo:"5 minutos",multa:"R$ 333,28 a R$ 1.866,12",gravidade:"media"},
+  {chave:"pregao-viva-voz",cat:"som",titulo:"Pregão/propaganda a viva voz em via pública",descricao:"Ruídos produzidos por pregões, anúncios ou propaganda a viva voz em via pública causando perturbação",artigo:"Art. 35, inciso I c/c Art. 36",texto:"Cessar imediatamente a prática de pregão ou propaganda a viva voz que cause perturbação ou incômodo à população",prazo:"5 minutos",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"caixa-som-exterior",cat:"som",titulo:"Caixa de som voltada para área externa",descricao:"Colocação de caixas de som ou equipamentos de emissão de som nas áreas internas voltadas para as áreas externas",artigo:"Art. 35, parágrafo único c/c Art. 36",texto:"Retirar ou reposicionar as caixas de som de forma que não emitam som diretamente para a área externa do estabelecimento",prazo:"5 minutos",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
 
   // ── COMÉRCIO / ESTABELECIMENTOS (31-43) ──
   {chave:"sem-alvara",cat:"comercio",titulo:"Funcionamento sem alvará",descricao:"Estabelecimento comercial, industrial ou prestador de serviço em atividade sem licença de localização e funcionamento",artigo:"Art. 187 c/c Art. 193 e Art. 205",texto:"Apresentar o Alvará de Funcionamento ou comprovante de protocolo do pedido de licenciamento junto à Secretaria de Finanças",prazo:"30 dias",multa:"R$ 267,83 a R$ 2.563,37 + interdição",gravidade:"media"},
-  {chave:"fora-horario",cat:"comercio",titulo:"Funcionamento fora do horário permitido",descricao:"Estabelecimento comercial realizando atos de compra e venda fora do horário de funcionamento autorizado",artigo:"Art. 206 c/c Art. 212 e Art. 214",texto:"Adequar o funcionamento do estabelecimento ao horário previsto em lei ou em acordo coletivo devidamente registrado",prazo:"Imediato",multa:"R$ 399,82 a R$ 1.866,12",gravidade:"media"},
+  {chave:"fora-horario",cat:"comercio",titulo:"Funcionamento fora do horário permitido",descricao:"Estabelecimento comercial realizando atos de compra e venda fora do horário de funcionamento autorizado",artigo:"Art. 206 c/c Art. 212 e Art. 214",texto:"Adequar o funcionamento do estabelecimento ao horário previsto em lei ou em acordo coletivo devidamente registrado",prazo:"5 minutos",multa:"R$ 399,82 a R$ 1.866,12",gravidade:"media"},
   {chave:"alvara-vencido",cat:"comercio",titulo:"Alvará de funcionamento vencido",descricao:"Estabelecimento em funcionamento com alvará expirado, sem solicitar renovação no prazo legal",artigo:"Art. 197, parágrafo único c/c Art. 205",texto:"Requerer imediatamente a renovação do Alvará de Funcionamento junto à Secretaria Municipal de Finanças, apresentando toda a documentação exigida",prazo:"30 dias",multa:"R$ 267,83 a R$ 2.563,37",gravidade:"media"},
-  {chave:"venda-alcool-menor",cat:"comercio",titulo:"Venda de álcool a menor de 18 anos",descricao:"Estabelecimento que comercializa bebida alcoólica para pessoa menor de 18 anos de idade",artigo:"Art. 32, parágrafo único c/c Art. 36",texto:"Cessar imediatamente a venda de bebidas alcoólicas a menores de 18 anos, sob pena de interdição do estabelecimento",prazo:"Imediato",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
+  {chave:"venda-alcool-menor",cat:"comercio",titulo:"Venda de álcool a menor de 18 anos",descricao:"Estabelecimento que comercializa bebida alcoólica para pessoa menor de 18 anos de idade",artigo:"Art. 32, parágrafo único c/c Art. 36",texto:"Cessar imediatamente a venda de bebidas alcoólicas a menores de 18 anos, sob pena de interdição do estabelecimento",prazo:"5 minutos",multa:"R$ 400,61 a R$ 6.662,10",gravidade:"grave"},
   {chave:"toldo-sem-licenca",cat:"comercio",titulo:"Toldo instalado sem licença",descricao:"Toldo instalado em fachada de estabelecimento sem autorização da Secretaria e/ou fora dos padrões exigidos",artigo:"Art. 183 c/c Art. 186",texto:"Regularizar a instalação do toldo junto à Secretaria ou retirá-lo, obedecendo as dimensões e altura mínima de 2,20 m previstas em lei",prazo:"30 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"leve"},
-  {chave:"ambulante-irregular",cat:"comercio",titulo:"Comércio ambulante sem autorização",descricao:"Comércio exercido em área pública sem autorização expressa do órgão competente",artigo:"Art. 28 c/c Art. 29",texto:"Cessar imediatamente o comércio no local ou apresentar a autorização para exercício da atividade em área pública",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"ambulante-irregular",cat:"comercio",titulo:"Comércio ambulante sem autorização",descricao:"Comércio exercido em área pública sem autorização expressa do órgão competente",artigo:"Art. 28 c/c Art. 29",texto:"Cessar imediatamente o comércio no local ou apresentar a autorização para exercício da atividade em área pública",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
   {chave:"banca-irregular",cat:"comercio",titulo:"Banca/estrutura de comércio irregular",descricao:"Trailer, banca ou quiosque montado fora do local autorizado ou com fixação irregular em poste/árvore/calçada",artigo:"Art. 60 e Art. 62 c/c Art. 67",texto:"Remover ou reposicionar a estrutura de comércio para o local autorizado, retirando qualquer fixação irregular em poste, árvore ou calçada",prazo:"15 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
-  {chave:"feira-livre-limpeza",cat:"comercio",titulo:"Feirante — falta de limpeza na área",descricao:"Feirante que não mantém varridas e limpas as áreas de sua barraca e de circulação adjacentes",artigo:"Art. 26 c/c Art. 29",texto:"Varrer e limpar a área de localização da barraca e as áreas de circulação adjacentes, recolhendo e acondicionando os resíduos adequadamente",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"feira-livre-limpeza",cat:"comercio",titulo:"Feirante — falta de limpeza na área",descricao:"Feirante que não mantém varridas e limpas as áreas de sua barraca e de circulação adjacentes",artigo:"Art. 26 c/c Art. 29",texto:"Varrer e limpar a área de localização da barraca e as áreas de circulação adjacentes, recolhendo e acondicionando os resíduos adequadamente",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
   {chave:"inflamaveis-irregular",cat:"comercio",titulo:"Depósito de inflamáveis fora das normas",descricao:"Manutenção de depósito de substâncias inflamáveis ou explosivos sem atender às exigências de segurança",artigo:"Art. 115, inciso II c/c Art. 123",texto:"Regularizar o depósito de inflamáveis/explosivos conforme as exigências de segurança do Corpo de Bombeiros ou cessar a guarda do material",prazo:"Imediato a 15 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"grave"},
-  {chave:"fogos-artificio",cat:"comercio",titulo:"Fogos de artifício com estouro",descricao:"Comercialização ou queima de fogos de artifício ou artefatos pirotécnicos com estouro em via pública",artigo:"Art. 115, inciso IV c/c Art. 116",texto:"Cessar imediatamente a comercialização e/ou queima de fogos de artifício com estouro no território do Município",prazo:"Imediato",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"grave"},
+  {chave:"fogos-artificio",cat:"comercio",titulo:"Fogos de artifício com estouro",descricao:"Comercialização ou queima de fogos de artifício ou artefatos pirotécnicos com estouro em via pública",artigo:"Art. 115, inciso IV c/c Art. 116",texto:"Cessar imediatamente a comercialização e/ou queima de fogos de artifício com estouro no território do Município",prazo:"5 minutos",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"grave"},
   {chave:"deposito-ferro-velho",cat:"comercio",titulo:"Depósito de ferro-velho irregular",descricao:"Ferro-velho sem muro de alvenaria com altura mínima de 2,50 m ou expondo material nos passeios",artigo:"Art. 200 e 201 c/c Art. 205",texto:"Adequar o depósito construindo muro de alvenaria ou concreto com altura mínima de 2,50 m e retirando qualquer material exposto nos passeios",prazo:"30 dias",multa:"R$ 267,83 a R$ 2.563,37",gravidade:"media"},
   {chave:"aferição-aparelhos",cat:"comercio",titulo:"Aparelhos de medição sem aferição",descricao:"Estabelecimento que não submeteu aparelhos ou instrumentos de medida à aferição pelo INMETRO antes do início das atividades",artigo:"Art. 204 c/c Art. 205",texto:"Submeter à aferição todos os aparelhos e instrumentos de medida utilizados nas transações comerciais, conforme normas do INMETRO",prazo:"15 dias",multa:"R$ 267,83 a R$ 2.563,37",gravidade:"media"},
   {chave:"alvará-nao-visivel",cat:"comercio",titulo:"Alvará não fixado em local visível",descricao:"Estabelecimento sem o alvará de funcionamento exposto em local de fácil visualização pelo público",artigo:"Art. 194 c/c Art. 205",texto:"Afixar o Alvará de Funcionamento em local visível ao público no interior do estabelecimento",prazo:"10 dias",multa:"R$ 267,83 a R$ 2.563,37",gravidade:"leve"},
 
   // ── PUBLICIDADE (44-51) ──
   {chave:"publicidade-irregular",cat:"publicidade",titulo:"Publicidade irregular (sem licença)",descricao:"Instalação de placa, painel, outdoor ou letreiro sem licença da Secretaria ou em desacordo com as dimensões permitidas",artigo:"Art. 142 c/c Art. 173 e Art. 179",texto:"Retirar o dispositivo de publicidade irregular ou regularizar a licença junto à Secretaria Municipal de Serviços Urbanos",prazo:"30 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
-  {chave:"windbanner",cat:"publicidade",titulo:"Wind banner / placa sobre calçada ou canteiro",descricao:"Colocação de wind banner ou placa de publicidade sobre calçadas ou canteiros centrais de vias públicas",artigo:"Art. 159, inciso VI c/c Art. 179",texto:"Retirar imediatamente o wind banner/placa instalado sobre a calçada ou canteiro central, vedada sua reinstalação sem amparo legal",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
-  {chave:"pichacao",cat:"publicidade",titulo:"Pichação ou propaganda eleitoral irregular",descricao:"Pichação, inscrição a tinta ou fixação de placas/faixas em postes, viadutos, calçadas, muros e mobiliário urbano",artigo:"Art. 155 c/c Art. 158 e Art. 179, §único",texto:"Retirar/remover imediatamente a propaganda ou pichação irregular e restaurar a superfície atingida ao estado anterior",prazo:"Imediato",multa:"R$ 190,32 a R$ 1.824,16 (até R$ 11.357,11 §único Art. 179)",gravidade:"grave"},
-  {chave:"publicidade-arvore-poste",cat:"publicidade",titulo:"Publicidade em árvores ou postes",descricao:"Instalação de publicidade afixada em árvores de qualquer porte ou em postes de iluminação pública",artigo:"Art. 154, incisos III e XI c/c Art. 179",texto:"Retirar imediatamente a publicidade instalada em árvores e postes de iluminação, sendo proibida a reinstalação",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"windbanner",cat:"publicidade",titulo:"Wind banner / placa sobre calçada ou canteiro",descricao:"Colocação de wind banner ou placa de publicidade sobre calçadas ou canteiros centrais de vias públicas",artigo:"Art. 159, inciso VI c/c Art. 179",texto:"Retirar imediatamente o wind banner/placa instalado sobre a calçada ou canteiro central, vedada sua reinstalação sem amparo legal",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"pichacao",cat:"publicidade",titulo:"Pichação ou propaganda eleitoral irregular",descricao:"Pichação, inscrição a tinta ou fixação de placas/faixas em postes, viadutos, calçadas, muros e mobiliário urbano",artigo:"Art. 155 c/c Art. 158 e Art. 179, §único",texto:"Retirar/remover imediatamente a propaganda ou pichação irregular e restaurar a superfície atingida ao estado anterior",prazo:"5 minutos",multa:"R$ 190,32 a R$ 1.824,16 (até R$ 11.357,11 §único Art. 179)",gravidade:"grave"},
+  {chave:"publicidade-arvore-poste",cat:"publicidade",titulo:"Publicidade em árvores ou postes",descricao:"Instalação de publicidade afixada em árvores de qualquer porte ou em postes de iluminação pública",artigo:"Art. 154, incisos III e XI c/c Art. 179",texto:"Retirar imediatamente a publicidade instalada em árvores e postes de iluminação, sendo proibida a reinstalação",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
   {chave:"publicidade-fora-padrao",cat:"publicidade",titulo:"Outdoor/painel acima da dimensão permitida",descricao:"Outdoor ou painel publicitário com dimensões ou altura superiores às previstas em lei (máx. 7 m de altura)",artigo:"Art. 168 c/c Art. 179",texto:"Adequar as dimensões e altura do dispositivo de publicidade aos padrões previstos em lei ou retirar o equipamento irregular",prazo:"30 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
-  {chave:"publicidade-alcool-proibida",cat:"publicidade",titulo:"Publicidade de álcool em local proibido",descricao:"Propaganda de bebida alcoólica nas proximidades (raio de 100 m) de prédios públicos, creches, asilos ou estabelecimentos de ensino",artigo:"Art. 171 c/c Art. 179",texto:"Retirar imediatamente a publicidade de bebida alcoólica instalada a menos de 100 m da entrada/saída do estabelecimento protegido",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
+  {chave:"publicidade-alcool-proibida",cat:"publicidade",titulo:"Publicidade de álcool em local proibido",descricao:"Propaganda de bebida alcoólica nas proximidades (raio de 100 m) de prédios públicos, creches, asilos ou estabelecimentos de ensino",artigo:"Art. 171 c/c Art. 179",texto:"Retirar imediatamente a publicidade de bebida alcoólica instalada a menos de 100 m da entrada/saída do estabelecimento protegido",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
   {chave:"publicidade-sem-licenca-fachada",cat:"publicidade",titulo:"Letreiro/placa em fachada sem licença",descricao:"Letreiro, placa ou identificação afixada na fachada do imóvel sem licença e sem respeitar as dimensões máximas permitidas",artigo:"Art. 169 c/c Art. 179",texto:"Regularizar a licença para o letreiro/placa junto à Secretaria ou retirá-lo, respeitando as dimensões máximas previstas no Art. 169",prazo:"30 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
-  {chave:"faixa-via-sem-licenca",cat:"publicidade",titulo:"Faixa atravessando a via pública sem licença",descricao:"Faixa de propaganda colocada atravessando a via pública sem licença especial da Secretaria",artigo:"Art. 159, inciso V c/c Art. 179",texto:"Retirar a faixa que atravessa a via pública ou requerer licença especial junto à Secretaria de Serviços Urbanos",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"faixa-via-sem-licenca",cat:"publicidade",titulo:"Faixa atravessando a via pública sem licença",descricao:"Faixa de propaganda colocada atravessando a via pública sem licença especial da Secretaria",artigo:"Art. 159, inciso V c/c Art. 179",texto:"Retirar a faixa que atravessa a via pública ou requerer licença especial junto à Secretaria de Serviços Urbanos",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
 
   // ── TRÂNSITO / VIAS (52-57) ──
-  {chave:"obstrucao-transito",cat:"transito",titulo:"Obstrução do livre trânsito (Art. 69)",descricao:"Embaraçar ou impedir o livre trânsito de pedestres em passeios/praças ou de veículos em vias públicas",artigo:"Art. 69 c/c Art. 75",texto:"Desobstruir imediatamente a via/passeio, retirando o objeto, veículo ou estrutura que impede o livre trânsito de pedestres e veículos",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"obstrucao-transito",cat:"transito",titulo:"Obstrução do livre trânsito (Art. 69)",descricao:"Embaraçar ou impedir o livre trânsito de pedestres em passeios/praças ou de veículos em vias públicas",artigo:"Art. 69 c/c Art. 75",texto:"Desobstruir imediatamente a via/passeio, retirando o objeto, veículo ou estrutura que impede o livre trânsito de pedestres e veículos",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
   {chave:"estacionamento-calcada",cat:"transito",titulo:"Veículo/material estacionado sobre a calçada",descricao:"Estacionamento de veículos ou depósito de materiais sobre os passeios e calçadas",artigo:"Art. 70 c/c Art. 75",texto:"Retirar o veículo ou material depositado sobre o passeio/calçada, liberando a via para circulação de pedestres",prazo:"Imediato a 6 horas",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
   {chave:"via-rural-obstrucao",cat:"transito",titulo:"Obstrução/alteração em via rural municipal",descricao:"Fechar, estreitar, mudar ou dificultar a circulação em faixa de domínio de via rural sem licença do órgão competente",artigo:"Art. 102, inciso I c/c Art. 104",texto:"Desobstruir a faixa de domínio da via rural e restaurar as condições originais de circulação, sob pena de execução pela Prefeitura",prazo:"15 dias",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"media"},
-  {chave:"veiculo-carga-excesso",cat:"transito",titulo:"Veículo de carga acima do limite de peso",descricao:"Veículo de transporte trafegando com carga ou peso superior ao fixado em sinalização sem licença prévia",artigo:"Art. 77 c/c Art. 82",texto:"Adequar o carregamento do veículo ao limite de peso previsto na sinalização ou obter a licença especial junto à Secretaria de Trânsito",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
-  {chave:"explosivos-veiculo",cat:"transito",titulo:"Explosivos e inflamáveis no mesmo veículo",descricao:"Transporte simultâneo de explosivos e inflamáveis no mesmo veículo",artigo:"Art. 78 c/c Art. 82",texto:"Cessar imediatamente o transporte conjunto de explosivos e inflamáveis no mesmo veículo, adotando meios separados para cada tipo de carga",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
-  {chave:"palanque-sem-licenca",cat:"transito",titulo:"Coreto/palanque sem autorização",descricao:"Instalação de palanque provisório em logradouro público sem solicitação de aprovação à Secretaria com antecedência mínima de 3 dias úteis",artigo:"Art. 92 c/c Art. 94",texto:"Requerer autorização junto à Secretaria de Serviços Urbanos para instalação do palanque/coreto ou proceder à sua remoção imediata",prazo:"Imediato",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"veiculo-carga-excesso",cat:"transito",titulo:"Veículo de carga acima do limite de peso",descricao:"Veículo de transporte trafegando com carga ou peso superior ao fixado em sinalização sem licença prévia",artigo:"Art. 77 c/c Art. 82",texto:"Adequar o carregamento do veículo ao limite de peso previsto na sinalização ou obter a licença especial junto à Secretaria de Trânsito",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"explosivos-veiculo",cat:"transito",titulo:"Explosivos e inflamáveis no mesmo veículo",descricao:"Transporte simultâneo de explosivos e inflamáveis no mesmo veículo",artigo:"Art. 78 c/c Art. 82",texto:"Cessar imediatamente o transporte conjunto de explosivos e inflamáveis no mesmo veículo, adotando meios separados para cada tipo de carga",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
+  {chave:"palanque-sem-licenca",cat:"transito",titulo:"Coreto/palanque sem autorização",descricao:"Instalação de palanque provisório em logradouro público sem solicitação de aprovação à Secretaria com antecedência mínima de 3 dias úteis",artigo:"Art. 92 c/c Art. 94",texto:"Requerer autorização junto à Secretaria de Serviços Urbanos para instalação do palanque/coreto ou proceder à sua remoção imediata",prazo:"5 minutos",multa:"R$ 266,67 a R$ 1.866,12",gravidade:"leve"},
 
   // ── ANIMAIS (58-60) ──
-  {chave:"animais-via-publica",cat:"animais",titulo:"Animais ruminantes/equinos soltos em vias",descricao:"Permanência de animais ruminantes/equinos soltos em vias e logradouros públicos da área urbana",artigo:"Art. 124 c/c Art. 128",texto:"Recolher o(s) animal(is) das vias públicas, evitando a reincidência da soltura em área urbana",prazo:"Imediato",multa:"R$ 183,10 a R$ 1.866,12 + apreensão do animal",gravidade:"media"},
-  {chave:"fezes-animal",cat:"animais",titulo:"Fezes de animal não recolhidas",descricao:"Deixar de recolher fezes de animais depositadas em vias e espaços públicos pelo respectivo tutor/condutor",artigo:"Art. 4º, inciso XXV c/c Art. 5º",texto:"Recolher imediatamente as fezes do animal depositadas na via pública e adotar a prática em todas as futuras conduções do animal",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
-  {chave:"animal-amarra-arvore",cat:"animais",titulo:"Animal amarrado em cerca/árvore em via pública",descricao:"Amarrar animais em cercas, muros, grades ou árvores em vias e logradouros públicos",artigo:"Art. 127, inciso I c/c Art. 128",texto:"Retirar imediatamente o animal amarrado em cerca/muro/grade/árvore de via pública, conduzindo-o para local apropriado",prazo:"Imediato",multa:"R$ 183,10 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"animais-via-publica",cat:"animais",titulo:"Animais ruminantes/equinos soltos em vias",descricao:"Permanência de animais ruminantes/equinos soltos em vias e logradouros públicos da área urbana",artigo:"Art. 124 c/c Art. 128",texto:"Recolher o(s) animal(is) das vias públicas, evitando a reincidência da soltura em área urbana",prazo:"5 minutos",multa:"R$ 183,10 a R$ 1.866,12 + apreensão do animal",gravidade:"media"},
+  {chave:"fezes-animal",cat:"animais",titulo:"Fezes de animal não recolhidas",descricao:"Deixar de recolher fezes de animais depositadas em vias e espaços públicos pelo respectivo tutor/condutor",artigo:"Art. 4º, inciso XXV c/c Art. 5º",texto:"Recolher imediatamente as fezes do animal depositadas na via pública e adotar a prática em todas as futuras conduções do animal",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
+  {chave:"animal-amarra-arvore",cat:"animais",titulo:"Animal amarrado em cerca/árvore em via pública",descricao:"Amarrar animais em cercas, muros, grades ou árvores em vias e logradouros públicos",artigo:"Art. 127, inciso I c/c Art. 128",texto:"Retirar imediatamente o animal amarrado em cerca/muro/grade/árvore de via pública, conduzindo-o para local apropriado",prazo:"5 minutos",multa:"R$ 183,10 a R$ 1.866,12",gravidade:"leve"},
 
   // ── OBRAS / CONSTRUÇÃO (61-62) ──
   {chave:"obstrucao-obra",cat:"obras",titulo:"Obstrução de via com material de obra",descricao:"Depósito de materiais de construção, tapumes ou entulho em via pública sem proteção/sinalização adequada",artigo:"Art. 20 c/c Art. 25",texto:"Remover o excesso de material, sinalizar adequadamente a obra e garantir a passagem segura de pedestres com tapumes ou cordas sinalizadas",prazo:"Imediato a 6 horas",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"leve"},
-  {chave:"obra-sem-sinalizar-pedestre",cat:"obras",titulo:"Obra sem sinalização de segurança de pedestres",descricao:"Execução de reforma ou construção com necessidade de interdição de passeio público sem garantir segurança dos pedestres",artigo:"Art. 21 c/c Art. 25",texto:"Instalar imediatamente tapumes ou corredor de cordas sinalizados, garantindo passagem segura de pedestres e obtendo autorização para interdição total, se necessário",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12 + interdição da obra",gravidade:"media"},
-  {chave:"obra-servico-sem-licenca-logradouro",cat:"obras",titulo:"Obra/serviço em logradouro sem licença",descricao:"Execução de serviços em calçadas e pistas de rolamento (extensão de cabos, água, esgoto) sem prévia licença da Secretaria de Obras",artigo:"Art. 105 c/c Art. 108",texto:"Paralisar imediatamente o serviço e requerer a licença junto à Secretaria Municipal de Obras antes do prosseguimento dos trabalhos",prazo:"Imediato",multa:"R$ 665,00 (multa específica do art. 108) em dobro na reincidência",gravidade:"media"},
+  {chave:"obra-sem-sinalizar-pedestre",cat:"obras",titulo:"Obra sem sinalização de segurança de pedestres",descricao:"Execução de reforma ou construção com necessidade de interdição de passeio público sem garantir segurança dos pedestres",artigo:"Art. 21 c/c Art. 25",texto:"Instalar imediatamente tapumes ou corredor de cordas sinalizados, garantindo passagem segura de pedestres e obtendo autorização para interdição total, se necessário",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12 + interdição da obra",gravidade:"media"},
+  {chave:"obra-servico-sem-licenca-logradouro",cat:"obras",titulo:"Obra/serviço em logradouro sem licença",descricao:"Execução de serviços em calçadas e pistas de rolamento (extensão de cabos, água, esgoto) sem prévia licença da Secretaria de Obras",artigo:"Art. 105 c/c Art. 108",texto:"Paralisar imediatamente o serviço e requerer a licença junto à Secretaria Municipal de Obras antes do prosseguimento dos trabalhos",prazo:"5 minutos",multa:"R$ 665,00 (multa específica do art. 108) em dobro na reincidência",gravidade:"media"},
 
   // ── EVENTOS / DIVERSÕES (63-65) ──
   {chave:"evento-sem-seguranca",cat:"eventos",titulo:"Evento/casa de shows sem AVCB ou segurança",descricao:"Casa de diversão ou evento sem extintores, saídas sinalizadas ou Auto de Vistoria do Corpo de Bombeiros",artigo:"Art. 39 c/c Art. 54 e Art. 191",texto:"Providenciar a regularização dos itens de segurança exigidos (sinalização de saída, extintores, AVCB) antes da reabertura ao público",prazo:"Imediato a 30 dias",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
-  {chave:"evento-sem-licenca",cat:"eventos",titulo:"Evento/divertimento público sem licença",descricao:"Realização de divertimento público em via pública ou recinto fechado sem licença do Município",artigo:"Art. 38 c/c Art. 54",texto:"Requerer imediatamente a licença para o evento junto à Secretaria Municipal competente ou encerrar a realização do evento",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
-  {chave:"circo-parque-sem-vistoria",cat:"eventos",titulo:"Circo/parque de diversões sem vistoria",descricao:"Circo, parque de diversões ou parque infantil franqueado ao público sem vistoria das instalações pelas autoridades competentes",artigo:"Art. 45 c/c Art. 54",texto:"Paralisar imediatamente o acesso do público até que todas as instalações sejam vistoriadas pelas autoridades competentes",prazo:"Imediato",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
+  {chave:"evento-sem-licenca",cat:"eventos",titulo:"Evento/divertimento público sem licença",descricao:"Realização de divertimento público em via pública ou recinto fechado sem licença do Município",artigo:"Art. 38 c/c Art. 54",texto:"Requerer imediatamente a licença para o evento junto à Secretaria Municipal competente ou encerrar a realização do evento",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"media"},
+  {chave:"circo-parque-sem-vistoria",cat:"eventos",titulo:"Circo/parque de diversões sem vistoria",descricao:"Circo, parque de diversões ou parque infantil franqueado ao público sem vistoria das instalações pelas autoridades competentes",artigo:"Art. 45 c/c Art. 54",texto:"Paralisar imediatamente o acesso do público até que todas as instalações sejam vistoriadas pelas autoridades competentes",prazo:"5 minutos",multa:"R$ 194,69 a R$ 1.866,12",gravidade:"grave"},
 ];
 
 // ════════════════════════════════════════════════
 // ECOPONTOS — 16 UNIDADES (fonte oficial Prefeitura Uberlândia, 2025)
 // ════════════════════════════════════════════════
 const ECOPONTOS = [
-  {bairro:"Daniel Fonseca",end:"Rua Itabira, 1720",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+Itabira+1720+Uberlandia+MG"},
-  {bairro:"Guarani",end:"Rua do Repentista, 350",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+do+Repentista+350+Uberlandia+MG"},
-  {bairro:"Jardim Canaã",end:"Av. Palestina – esq. c/ Rua Menfins e Biblios",regiao:"Leste",maps:"https://maps.google.com/?q=Avenida+Palestina+esq+Menfins+Uberlandia+MG"},
+  {bairro:"Daniel Fonseca",end:"Rua Itabira, 1720",regiao:"Central",maps:"https://maps.google.com/?q=Rua+Itabira+1720+Uberlandia+MG"},
+  {bairro:"Guarani",end:"Rua do Repentista, 350",regiao:"Oeste",maps:"https://maps.google.com/?q=Rua+do+Repentista+350+Uberlandia+MG"},
+  {bairro:"Jardim Canaã",end:"Av. Palestina – esq. c/ Rua Menfins e Biblios",regiao:"Oeste",maps:"https://maps.google.com/?q=Avenida+Palestina+esq+Menfins+Uberlandia+MG"},
   {bairro:"Lagoinha",end:"Alameda Arnolde de Almeida Castro, 172",regiao:"Sul",maps:"https://maps.google.com/?q=Alameda+Arnolde+de+Almeida+Castro+172+Uberlandia+MG"},
   {bairro:"Luizote de Freitas",end:"Rua Wilson Gonçalves de Souza, 10 – esq. c/ Rua Paulo Margonari",regiao:"Oeste",maps:"https://maps.google.com/?q=Rua+Wilson+Goncalves+de+Souza+10+Uberlandia+MG"},
   {bairro:"Mansour",end:"Rua Rio Corumbá, 20 – esq. c/ Av. Rio Nilo",regiao:"Oeste",maps:"https://maps.google.com/?q=Rua+Rio+Corumba+20+Uberlandia+MG"},
-  {bairro:"Monte Hebron",end:"Av. Benedita Fagundes da Costa, 12 – esq. c/ Av. Guimara Alves Oliveira",regiao:"Norte",maps:"https://maps.google.com/?q=Avenida+Benedita+Fagundes+da+Costa+12+Uberlandia+MG"},
-  {bairro:"Morumbi",end:"Rua Campeio, 247 – esq. c/ Av. José Maria Ribeiro",regiao:"Oeste",maps:"https://maps.google.com/?q=Rua+Campeio+247+Uberlandia+MG"},
-  {bairro:"Pequis",end:"Rua do Tapiti, 250",regiao:"Norte",maps:"https://maps.google.com/?q=Rua+do+Tapiti+250+Uberlandia+MG"},
+  {bairro:"Monte Hebron",end:"Av. Benedita Fagundes da Costa, 12 – esq. c/ Av. Guimara Alves Oliveira",regiao:"Oeste",maps:"https://maps.google.com/?q=Avenida+Benedita+Fagundes+da+Costa+12+Uberlandia+MG"},
+  {bairro:"Morumbi",end:"Rua Campeio, 247 – esq. c/ Av. José Maria Ribeiro",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+Campeio+247+Uberlandia+MG"},
+  {bairro:"Pequis",end:"Rua do Tapiti, 250",regiao:"Oeste",maps:"https://maps.google.com/?q=Rua+do+Tapiti+250+Uberlandia+MG"},
   {bairro:"Roosevelt",end:"Rua Olívia de Freitas Guimarães, 950",regiao:"Norte",maps:"https://maps.google.com/?q=Rua+Olivia+de+Freitas+Guimaraes+950+Uberlandia+MG"},
-  {bairro:"Santa Rosa",end:"Rua Ângela Alckmin, 211 – esq. c/ Rua Elis Regina",regiao:"Sul",maps:"https://maps.google.com/?q=Rua+Angela+Alckmin+211+Uberlandia+MG"},
-  {bairro:"São Jorge",end:"Av. Serra do Mar, 411 – esq. c/ Av. Serra do Espinhaço",regiao:"Leste",maps:"https://maps.google.com/?q=Avenida+Serra+do+Mar+411+Uberlandia+MG"},
+  {bairro:"Santa Rosa",end:"Rua Ângela Alckmin, 211 – esq. c/ Rua Elis Regina",regiao:"Norte",maps:"https://maps.google.com/?q=Rua+Angela+Alckmin+211+Uberlandia+MG"},
+  {bairro:"São Jorge",end:"Av. Serra do Mar, 411 – esq. c/ Av. Serra do Espinhaço",regiao:"Sul",maps:"https://maps.google.com/?q=Avenida+Serra+do+Mar+411+Uberlandia+MG"},
   {bairro:"São Lucas",end:"Rua do Cientista – esq. c/ Rua do Gari",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+do+Cientista+Rua+do+Gari+Uberlandia+MG"},
-  {bairro:"Segismundo Pereira",end:"Rua Sebastião Alves Nunes, 49 – esq. c/ Rua Dr. Laerte V. Gonçalves",regiao:"Sul",maps:"https://maps.google.com/?q=Rua+Sebastiao+Alves+Nunes+49+Uberlandia+MG"},
+  {bairro:"Segismundo Pereira",end:"Rua Sebastião Alves Nunes, 49 – esq. c/ Rua Dr. Laerte V. Gonçalves",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+Sebastiao+Alves+Nunes+49+Uberlandia+MG"},
   {bairro:"Shopping Park",end:"Av. Sul Americana, 627",regiao:"Sul",maps:"https://maps.google.com/?q=Avenida+Sul+Americana+627+Uberlandia+MG"},
-  {bairro:"Tocantins",end:"Rua Docelino de Freitas Costa – esq. c/ Rua Bernadete Silva Arantes (ao lado do Cond. Morada do Sol)",regiao:"Leste",maps:"https://maps.google.com/?q=Rua+Docelino+de+Freitas+Costa+Uberlandia+MG"},
+  {bairro:"Tocantins",end:"Rua Docelino de Freitas Costa – esq. c/ Rua Bernadete Silva Arantes (ao lado do Cond. Morada do Sol)",regiao:"Oeste",maps:"https://maps.google.com/?q=Rua+Docelino+de+Freitas+Costa+Uberlandia+MG"},
+];
+
+// ════════════════════════════════════════════════
+// PONTOS CRÍTICOS — 46 LOCAIS MONITORADOS
+// Nível de criticidade (nivel) representado por símbolo ☢ na interface
+// ════════════════════════════════════════════════
+const PONTOS_CRITICOS = [
+  {local:"R. Marlos Urquiza",nivel:1,regiao:"Oeste",maps:"https://maps.app.goo.gl/FMUpaS2xfnN8m3i6A"},
+  {local:"Av. Boulanger",nivel:2,regiao:"Sul",maps:"https://maps.app.goo.gl/x8FpEFh5Nvk4BvJdA"},
+  {local:"Av. José Abdulmassih",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/bmWagNbbrFxYYecP6"},
+  {local:"R. Ivete Cordeiro",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/79iyP7JVbv5Q1GMn8"},
+  {local:"Av. Rio Acima",nivel:2,regiao:"Sul",maps:"https://maps.app.goo.gl/pLEoUniV1wKo1uPM9"},
+  {local:"Av. Nicomedes Alves",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/mveiai8omiYq8nV47"},
+  {local:"Av. Rescalla Sabbag",nivel:0,regiao:"Sul",maps:"https://maps.app.goo.gl/5QUgVD3r7zP5nB5SA"},
+  {local:"Pau Furado",nivel:3,regiao:"Leste",maps:"https://maps.app.goo.gl/w1vYn6BP8bGAfndt8"},
+  {local:"R. Um",nivel:1,regiao:"Leste",maps:"https://maps.app.goo.gl/d5HJhjSjCXrCLdKN8"},
+  {local:"R. Lazaro Pereira",nivel:1,regiao:"Leste",maps:"https://maps.app.goo.gl/wSnS62zfCHmQuSSk6"},
+  {local:"R. Gonçalo Alves",nivel:1,regiao:"Leste",maps:"https://maps.app.goo.gl/3tKuJJ8Gey61MvV99"},
+  {local:"Av. Jose Andraus",nivel:1,regiao:"Norte",maps:"https://maps.app.goo.gl/UQMgLoQDZ7zACKbTA"},
+  {local:"Alameda Um",nivel:1,regiao:"Leste",maps:"https://maps.app.goo.gl/KHiEUnhw4djoPumv8"},
+  {local:"R. do Ouro",nivel:3,regiao:"Oeste",maps:"https://maps.app.goo.gl/WzChZzDLRH6kyQoB6"},
+  {local:"R. Curitiba",nivel:1,regiao:"Leste",maps:"https://maps.app.goo.gl/u9Gq3vcK7GwfGqqf8"},
+  {local:"R. Mozart Silva",nivel:1,regiao:"Leste",maps:"https://maps.app.goo.gl/4XUiwEnaK66ZeNMFA"},
+  {local:"AV. Nova York",nivel:3,regiao:"Leste",maps:"https://maps.app.goo.gl/yd4TN9v4Rt7BTT1g9"},
+  {local:"R. Mario Faria",nivel:3,regiao:"Leste",maps:"https://maps.app.goo.gl/7uJ3oCr3wQicAciG8"},
+  {local:"Av. Ubiratan Honorio",nivel:2,regiao:"Leste",maps:"https://maps.app.goo.gl/uVqGRna26TEEZ1Kv5"},
+  {local:"Av. Fioravante Pelizer",nivel:3,regiao:"Oeste",maps:"https://maps.app.goo.gl/HhBSMZr69d2xS71P6"},
+  {local:"Legran",nivel:2,regiao:"Oeste",maps:"https://maps.app.goo.gl/2D38Q2iFC2jekAYbA"},
+  {local:"Interpark",nivel:3,regiao:"Norte",maps:"https://maps.app.goo.gl/x2ZheidZKM839qoF8"},
+  {local:"R. PM1",nivel:1,regiao:"Norte",maps:"https://maps.app.goo.gl/KxyT75okZbo2QNPg7"},
+  {local:"AV. Rio Mississipi",nivel:2,regiao:"Oeste",maps:"https://maps.app.goo.gl/XH9fRGafajYJzNTF8"},
+  {local:"Via Marginal",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/FW2MjkNsKQmXX2Wp6"},
+  {local:"Av. Israel",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/P1NVDKJJn1ci8uPV9"},
+  {local:"R. Da Carioca",nivel:2,regiao:"Sul",maps:"https://maps.app.goo.gl/xxHA3vFcQ7YZDJCZ6"},
+  {local:"Av. Sebastião Rodrigues",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/LTQre8A9o7hFpbsXA"},
+  {local:"R. Napoli",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/PFLsYvNACxeabQz8A"},
+  {local:"R. do Estivador",nivel:1,regiao:"Oeste",maps:"https://maps.app.goo.gl/LySYsPd8CUwdAENo7"},
+  {local:"R. Sudepe",nivel:3,regiao:"Oeste",maps:"https://maps.app.goo.gl/Yj6Xm4prgMQzPw5FA"},
+  {local:"Av. San Diego",nivel:3,regiao:"Leste",maps:"https://maps.app.goo.gl/y3TABuHsKpT8eJXa9"},
+  {local:"R. Amancio Jorge",nivel:1,regiao:"Leste",maps:"https://maps.app.goo.gl/LihrKuDLmR55YEgf7"},
+  {local:"Mercado Livre",nivel:3,regiao:"Norte",maps:"https://maps.app.goo.gl/Ph7kyQFma2jEvery7"},
+  {local:"Av. do Oleo",nivel:2,regiao:"Oeste",maps:"https://maps.app.goo.gl/b2LGKoNbZ5rdwHVv6"},
+  {local:"Av. Enodes de Oliveira",nivel:3,regiao:"Leste",maps:"https://maps.app.goo.gl/gRuvVbZNPj5xqkYdA"},
+  {local:"R. Bento Gonçalves",nivel:3,regiao:"Norte",maps:"https://maps.app.goo.gl/g2SLeZi5QL65KjCy7"},
+  {local:"Av. Elis Regina",nivel:3,regiao:"Norte",maps:"https://maps.app.goo.gl/jGMiCvh3q1A3aAV19"},
+  {local:"Av. Sebastião Manoel",nivel:1,regiao:"Leste",maps:"https://maps.app.goo.gl/B8uTtNcGcKJNxMwr8"},
+  {local:"Av. Toledo",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/qwSVmZua75KPkfsp9"},
+  {local:"R. Sueli Lopes",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/6ycteT9bttzTQco18"},
+  {local:"R. Helena Vilas",nivel:1,regiao:"Norte",maps:"https://maps.app.goo.gl/od9t3okRu8ydMJ1T8"},
+  {local:"R. Marcelino Bertoldo",nivel:1,regiao:"Oeste",maps:"https://maps.app.goo.gl/q956Zn8GBXkaqDs69"},
+  {local:"R. Padre Americo",nivel:2,regiao:"Leste",maps:"https://maps.app.goo.gl/beJ6LfDrgQMtvvdS9"},
+  {local:"Av. Iraque",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/b5NEt28L1BETef8T9"},
+  {local:"Av. Afonso Vilar",nivel:1,regiao:"Sul",maps:"https://maps.app.goo.gl/jsAFJb76aKMCk67L7"},
 ];
 
 // ════════════════════════════════════════════════
@@ -552,7 +635,7 @@ function copyAll(){
 // ════════════════════════════════════════════════
 // ECOPONTOS
 // ════════════════════════════════════════════════
-const REGIOES=['Todos','Norte','Sul','Leste','Oeste'];
+const REGIOES=['Todos','Central','Norte','Sul','Leste','Oeste'];
 let ecoFiltro='Todos';
 
 function renderEcopontos(){
@@ -591,6 +674,49 @@ function buildEcoChips(){
     row.appendChild(c);
   });
   s.insertBefore(row,s.querySelector('#ecopontosList'));
+}
+
+// ════════════════════════════════════════════════
+// PONTOS CRÍTICOS
+// ════════════════════════════════════════════════
+let criticoFiltro='Todos';
+
+function renderPontosCriticos(){
+  const filtered=PONTOS_CRITICOS.filter(p=>criticoFiltro==='Todos'||p.regiao===criticoFiltro);
+  document.getElementById('pontosCriticosList').innerHTML=filtered.map((p,i)=>`
+    <div class="ecoponto-card">
+      <div class="ecoponto-num">${PONTOS_CRITICOS.indexOf(p)+1}</div>
+      <div class="ecoponto-info">
+        <div class="ecoponto-bairro">${p.local}</div>
+        <span class="ecoponto-horario">Região ${p.regiao}</span><br>
+        <span class="critico-nivel">${'☢'.repeat(p.nivel) || '—'}</span>
+        <div>
+          <button class="ecoponto-maps-btn" onclick="window.open('${p.maps}','_blank')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 018 8c0 5.5-8 14-8 14S4 15.5 4 10a8 8 0 018-8z"/></svg>
+            Ver no mapa
+          </button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function buildCriticoChips(){
+  const s=document.getElementById('screen-pontoscriticos');
+  const row=document.createElement('div');
+  row.className='eco-chips';
+  REGIOES.forEach(r=>{
+    const c=document.createElement('div');
+    c.className='chip'+(r==='Todos'?' active':'');
+    c.textContent=r==='Todos'?'Todas as regiões':r;
+    c.onclick=()=>{
+      row.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');
+      criticoFiltro=r;
+      renderPontosCriticos();
+    };
+    row.appendChild(c);
+  });
+  s.insertBefore(row,s.querySelector('#pontosCriticosList'));
 }
 
 // ════════════════════════════════════════════════
@@ -657,6 +783,8 @@ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js');
 renderList();
 buildEcoChips();
 renderEcopontos();
+buildCriticoChips();
+renderPontosCriticos();
 </script>
 </body>
 </html>
